@@ -78,7 +78,7 @@ mkdir -p "$HOME/vol2/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
   echo "set --export GOCACHE \"$HOME/vol2/.cache/go/build\"";
   echo "set --export GOMODCACHE \"$HOME/vol2/.cache/go/mod\"";
   echo "set --export GOPATH \"$HOME/vol2/.cache/go/lib\"";
-  echo "set --export IPFS_PATH\"$HOME/vol2/.cache/ipfs\"";
+  echo "set --export IPFS_PATH \"$HOME/vol2/.cache/ipfs\"";
   echo "set --export NPM_CONFIG_CACHE \"$HOME/vol2/.cache/npm\"";
   echo "set --export NVM_DIR \"$HOME/vol2/.cache/nvm\"";
   echo "set --export XDG_CONFIG_HOME \"$HOME/.config\"";

@@ -6,12 +6,17 @@ source ../misc.sh
 
 _host=""
 _user=""
+_stepping=""
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
 		-h|--host)
 			_host="$2"
 			shift
+			shift
+			;;
+		-s|--stepping)
+			_stepping="--stepping"
 			shift
 			;;
 		-u|--user)
@@ -33,6 +38,7 @@ printinfo "\n"
 printinfo "+ --------------------------------------------------- +"
 printinfo "| Creating user directories and environment variables |"
 printinfo "+ --------------------------------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkdir "$HOME/.ssh"
 mkdir -p "$HOME/.config/fontconfig"
 mkdir -p "$HOME/.local/bin/go"
@@ -91,12 +97,14 @@ printinfo "\n"
 printinfo "+ ------------------- +"
 printinfo "| Installing dotfiles |"
 printinfo "+ ------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 . install-dotfiles.sh --host-dir ".." --fix-permissions
 
 printinfo "\n"
 printinfo "+ ------------------------ +"
 printinfo "| Installing user software |"
 printinfo "+ ------------------------ +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 sudo usermod -aG docker ${_user}
 sudo mkdir -p /etc/docker
 echo -e "{\n\t\"data-root\": \"$HOME/vol2/.cache/docker\"\n}" | sudo tee /etc/docker/daemon.json

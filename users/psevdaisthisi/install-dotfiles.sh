@@ -117,7 +117,7 @@ chmod u+x "${HOME}/.local/bin/tmux-gitstat.sh"
 cd "${_scriptdir}"
 
 if [ "$_fix_permissions" = "true" ]; then
-	sudo chown -R psevdaisthisi:psevdaisthisi"${_host_dir}"/dotfiles
+	sudo chown -R psevdaisthisi:psevdaisthisi "${_host_dir}"/dotfiles
 	sudo chmod -R u=rw,g=r,o=r "${_host_dir}"/dotfiles
 	sudo chmod u=rwx,g=r,o=r "${_host_dir}"/dotfiles
 fi

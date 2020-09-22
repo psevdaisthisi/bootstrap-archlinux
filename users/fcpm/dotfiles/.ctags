@@ -1,0 +1,8 @@
+--recurse
+--tag-relative=yes
+--languages=C,C++,CSS,Javascript,SCSS
+--exclude=*node_modules*
+--exclude=*package.json
+--exclude=*package-lock.json
+--exclude=*npm-shrinkwrap.json
+--exclude=@.ctagsignore

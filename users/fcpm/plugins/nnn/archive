@@ -1,0 +1,74 @@
+#!/usr/bin/env sh
+
+selection_file=${NNN_SEL:-${XDG_CONFIG_HOME:-$HOME/.config}/nnn/.selection}
+[ ! -f "$selection_file" ] && exit 1
+
+selection=$(cat "$selection_file" | tr '\0' '\n')
+archive_dir="$(pwd)"
+archive_fullname=""
+printf "Insert archive name: "
+read -r archive_fullname
+
+if [ -n "$archive_fullname" ]; then
+	archive_name="${archive_fullname%.*}"
+	archive_ext="${archive_fullname##*.}"
+
+	if [ "$archive_ext" = "zip" ] && [ -n $(command -v zip) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && zip --recurse-path \
+				"$archive_dir/$archive_fullname" ./$(basename "$entry")
+		done
+
+	elif [ "$archive_ext" = "tar" ] && [ -n $(command -v tar) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && tar --update --file \
+				"$archive_dir/$archive_fullname" $(basename "$entry")
+		done
+
+	elif [ "$archive_ext" = "tbz2" ] && [ -n $(command -v tar) ] && [ -n $(command -v bzip2) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && tar --update --file \
+				"$archive_dir/$archive_name".tar $(basename "$entry")
+		done
+
+		bzip2 --stdout "$archive_dir/$archive_name".tar > "$archive_dir/$archive_fullname"
+		rm "$archive_dir/$archive_name".tar
+
+	elif ([ "$archive_ext" = "tar.gz" ] || [ "$archive_ext" = "tgz" ]) && \
+	     [ -n $(command -v tar) ] && [ -n $(command -v gzip) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && tar --update --file \
+				"$archive_dir/$archive_name".tar $(basename "$entry")
+		done
+
+		gzip --stdout "$archive_dir/$archive_name".tar > "$archive_dir/$archive_fullname"
+		rm "$archive_dir/$archive_name".tar
+
+	elif ([ "$archive_ext" = "tar.xz" ] || [ "$archive_ext" = "txz" ]) && \
+	     [ -n $(command -v tar) ] && [ -n $(command -v xz) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && tar --update --file \
+				"$archive_dir/$archive_name".tar $(basename "$entry")
+		done
+
+		xz --threads=0 --stdout "$archive_dir/$archive_name".tar > \
+			"$archive_dir/$archive_fullname"
+		rm "$archive_dir/$archive_name".tar
+
+	elif [ "$archive_ext" = "tar.zst" ] && [ -n $(command -v tar) ] && [ -n $(command -v zstd) ]; then
+		for entry in $(echo "$selection" | xargs -0)
+		do
+			cd $(dirname "$entry") && tar --update --file \
+				"$archive_dir/$archive_name".tar $(basename "$entry")
+		done
+
+		zstd --threads=0 --stdout "$archive_dir/$archive_name".tar > \
+			"$archive_dir/$archive_fullname"
+		rm "$archive_dir/$archive_name".tar
+	fi
+fi

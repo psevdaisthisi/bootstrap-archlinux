@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+killall -q dunst
+killall -q flashfocus
+killall -q sxhkd
+killall -q redshift
+killall -q picom
+
+while pgrep -u $UID -x picom > /dev/null; do sleep 1;done &&
+	rm -rf "$HOME/.local/share/picom/log" && picom -b
+
+. "$HOME/.bashrc" && random-wallpaper
+
+while pgrep -u $UID -x redshift > /dev/null; do sleep 1;done && redshift &
+
+SXHKD_SHELL=/usr/bin/bash sxhkd &
+
+db=$(xrdb -query)
+colorbg=$(echo "$db" | grep '^\*\.background:' | awk '{print $2}')
+colorfg=$(echo "$db" | grep '^\*\.foreground:' | awk '{print $2}')
+color01=$(echo "$db" | grep '^\*\.color1:' | awk '{print $2}')
+color02=$(echo "$db" | grep '^\*\.color2:' | awk '{print $2}')
+color03=$(echo "$db" | grep '^\*\.color3:' | awk '{print $2}')
+color04=$(echo "$db" | grep '^\*\.color4:' | awk '{print $2}')
+color05=$(echo "$db" | grep '^\*\.color5:' | awk '{print $2}')
+color06=$(echo "$db" | grep '^\*\.color6:' | awk '{print $2}')
+color07=$(echo "$db" | grep '^\*\.color7:' | awk '{print $2}')
+color08=$(echo "$db" | grep '^\*\.color8:' | awk '{print $2}')
+color09=$(echo "$db" | grep '^\*\.color9:' | awk '{print $2}')
+color10=$(echo "$db" | grep '^\*\.color10:' | awk '{print $2}')
+color11=$(echo "$db" | grep '^\*\.color11:' | awk '{print $2}')
+color12=$(echo "$db" | grep '^\*\.color12:' | awk '{print $2}')
+color13=$(echo "$db" | grep '^\*\.color13:' | awk '{print $2}')
+color14=$(echo "$db" | grep '^\*\.color14:' | awk '{print $2}')
+color15=$(echo "$db" | grep '^\*\.color15:' | awk '{print $2}')
+
+bspc monitor --reset-desktops 1 2 3 4 5 6 7 8 9 10
+
+bspc config automatic_scheme alternate
+bspc config border_width 0
+bspc config focus_follows_pointer true
+bspc config pointer_follows_monitor true
+bspc config remove_unplugged_monitors true
+bspc config swallow_first_click false
+bspc config split_ratio 0.5
+bspc config window_gap 7
+bspc config active_border_color $colorfg
+bspc config focused_border_color $color03
+bspc config normal_border_color $colorfg
+bspc config presel_feedback_color $color03
+
+bspc rule --add "*" state=floating
+bspc wm --record-history on
+
+flashfocus \
+--no-flash-on-focus \
+--no-flash-fullscreen \
+--flash-lone-windows never \
+--time 300 &
+
+dunst &> "$HOME/.local/share/dunst/log" &
+
+exec "$XDG_CONFIG_HOME/polybar/start.sh"

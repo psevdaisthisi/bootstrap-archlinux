@@ -1,0 +1,21 @@
+root = true
+
+[*.{bash_profile,bashrc,conf,fish,json,sh,xml}]
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = true
+
+[*.c]
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = true
+
+[*.md]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false
+
+[*.vim]
+indent_style = tab
+indent_size = 2
+trim_trailing_whitespace = false

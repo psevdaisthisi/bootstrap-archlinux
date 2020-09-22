@@ -1,0 +1,6 @@
+#define FONTFAMILY monospace
+#define FONTSIZE 10
+rofi.font: FONTFAMILY FONTSIZE
+rofi.lines: 15
+rofi.theme: .cache/wal/colors-rofi-light
+Xcursor.size: 9

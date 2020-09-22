@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+# Modified version of `fzcd' created by Anna Arad
+# Available at: https://github.com/jarun/nnn/blob/master/plugins/fzcd
+sel=$(fd --exclude '.git/' --hidden --type d | fzf)
+[ -n "$sel" ] && printf "%s" "0$PWD/$sel" > "$NNN_PIPE"

@@ -1,0 +1,38 @@
+# Original configuration available at:
+# /usr/share/doc/alacritty/example/alacritty.yml
+
+scrolling:
+  history: 8192
+  multiplier: 3
+
+font:
+  normal:
+    family: monospace
+  size: 7.5
+  offset:
+    x: 0
+    y: 1
+
+window:
+  dynamic_title: true
+  dimensions:
+    columns: 130
+    lines: 30
+  padding:
+    x: 5
+    y: 5
+  gtk_theme_variant: dark
+
+background_opacity: 0.98
+
+selection:
+  save_to_clipboard: true
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+live_config_reload: true
+
+mouse:
+  hide_when_typing: true

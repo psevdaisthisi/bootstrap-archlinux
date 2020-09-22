@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Modified version of `pskill' created by Arun Prakash Jana
+# Available at: https://github.com/jarun/nnn/blob/master/plugins/pskill
+
+printf "Enter process name ['defunct' for zombies]: "
+read -r psname
+
+if ! [ -z "$psname" ]; then
+	cmd="$(ps -ax | grep -iw "$psname" | fzf | sed -e 's/^[ \t]*//' | cut -d' ' -f1)"
+	sudo kill -9 "$cmd"
+fi

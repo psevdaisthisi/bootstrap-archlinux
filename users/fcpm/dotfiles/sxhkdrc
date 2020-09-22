@@ -1,0 +1,142 @@
+# --- bspwm: windows ---
+super + {h,j,k,l}
+	bspc node --focus {west,south,north,east}; \
+	nc_flash_window
+
+super + {q,shift + q}
+	bspc node {--close,--kill}
+
+super + backslash
+	nc_flash_window
+
+super + ctrl + {h,j,k,l}
+	bspc node --presel-dir {~west,~south,~north,~east}
+
+super + u
+	bspc node --focus older.urgent
+
+super + Tab
+	bspc node --focus last; nc_flash_window
+super + p
+	bspc node --focus last; nc_flash_window
+super + {i,o}
+	bspc wm --record-history off; \
+	bspc node --focus {older,newer}.local.window.!hidden.!sticky; \
+	nc_flash_window; \
+	bspc wm --record-history on
+
+super + apostrophe
+	bspc node --swap biggest.local --follow
+
+super + shift + {h,j,k,l}
+	bspc node --swap {west,south,north,east} --follow
+
+super + shift + {1-9,0}
+	bspc node --to-desktop focused:'^{1-9,10}'.local --follow
+
+super + {w,s,a,d}
+	bspc node --to-monitor {north,south,west,east} --follow
+
+super + ctrl + button1
+	bspc node --state ~floating
+super + ctrl + button3
+	bspc node --state ~fullscreen
+super + ctrl + button2
+	bspc node --state ~tiled
+super + {f,t,z}
+	bspc node --state {~floating,~tiled,~fullscreen}
+super + shift + {f,t}
+	selection=$(bspc query --nodes --node .window.!hidden.!sticky --desktop); \
+	for node in ${selection}; do bspc node $node --state {floating,tiled}; done
+
+super + m
+	bspc node --flag hidden
+super + shift + m
+	nid=$(bspc query --nodes --node .local.window.hidden | tail -1); \
+	[ "$nid" ] && \
+	bspc node $nid --flag hidden && \
+	bspc node $nid --focus
+
+super + {plus,minus}
+	bspc node @/.local --rotate {90,-90}
+
+super + v
+	bspc node --to-node older.!automatic.local; \
+	bspc node --state tiled
+
+super + alt + {h,j,k,l}
+	bspc node --resize {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+super + alt + shift + {h,j,k,l}
+	bspc node --resize {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+
+# --- bspwm: desktops ---
+super + {1-9,0}
+	bspc desktop --focus focused:'^{1-9,10}'.local
+
+super + shift + {a,d}
+	bspc desktop --swap {prev,next}.local.occupied --follow
+
+super + shift + p
+	bspc desktop --focus last; nc_flash_window
+super + shift + {i,o}
+	bspc desktop --focus {prev,next}; nc_flash_window
+
+# --- bspwm: monitors ---
+super + comma
+	bspc monitor --focus next; \
+	nc_flash_window
+
+
+# --- system ---
+super + Return
+	/usr/bin/alacritty --command tmux
+super + shift + Return
+	/usr/bin/alacritty --dimensions 230 70 --command tmux
+
+super + shift + n
+	/usr/bin/firefox -private-window
+
+super + @space
+	/usr/bin/rofi -modi drun -show drun -show-icons -matching fuzzy -sort -sorting-method fzf \
+		-me-select-entry '' -me-accept-entry 'MousePrimary' \
+		-theme-str '#element \{ margin: 0 0 0.4ch 0; \}' \
+		-theme-str '#element-icon \{ size: 2.0ch; margin: 0 1.2ch 0 0; \}'
+super + shift + @space
+	/usr/bin/rofi -modi window -show window -show-icons -matching fuzzy -sort -sorting-method fzf \
+		-me-select-entry '' -me-accept-entry 'MousePrimary' \
+		-theme-str '#element \{ margin: 0 0 0.4ch 0; \}' \
+		-theme-str '#element-icon \{ size: 2.0ch; margin: 0 1.2ch 0 0; \}'
+
+super + Escape
+	pkill -USR1 -x sxhkd
+
+super + ctrl + shift + r
+	bspc wm --restart
+
+super + ctrl + shift + p
+	systemctl poweroff
+
+super + ctrl + shift + s
+	slock systemctl suspend
+
+super + ctrl + shift + l
+	slock
+
+super + e
+	pcmanfm
+
+Print
+	source $HOME/.bashrc && screenshot
+
+XF86AudioMute
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
+XF86Audio{Lower,Raise}Volume
+	pactl set-sink-volume @DEFAULT_SINK@ {-1%,+1%}
+
+shift + XF86AudioMute
+	pactl set-source-mute @DEFAULT_SOURCE@ toggle
+shift + XF86AudioLowerVolume +
+	pactl set-source-volume @DEFAULT_SOURCE@ -1%
+shift + XF86AudioRaiseVolume +
+	pactl set-source-volume @DEFAULT_SOURCE@ +1%

@@ -148,6 +148,10 @@ function qemu-start --description "Starts a QEMU VM"
 	bash -l -c "qemu-start $argv"
 end
 
+function qemu-start-win --description "Starts a QEMU Windows VM"
+	bash -l -c "qemu-start-win $argv"
+end
+
 function mkcd --description "Make directory and cd into it"
 	mkdir "$argv[1]"
 	cd "$argv[1]"

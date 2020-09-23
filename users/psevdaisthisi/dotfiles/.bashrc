@@ -270,12 +270,78 @@ qemu-start () {
 	[ ! -f "$volume" ] && echo "ERROR: missing or invalid volume." && exit 1
 	[ -n "$cdrom" ] && [ ! -f "$cdrom" ] &&  echo "ERROR: invalid cdrom file." && exit 1
 
-	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu \
+	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu -device virtio-balloon \
 		-object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-pci,id=rng0 \
 		-cpu max -smp "$smp" -m "$mem" -vga virtio -display sdl,gl=on \
 		-drive file="/usr/share/edk2-ovmf/x64/OVMF_CODE.fd",if=pflash,format=raw,readonly=on \
 		-drive file="/usr/share/edk2-ovmf/x64/OVMF_VARS.fd",if=pflash,format=raw,readonly=on \
 		-cdrom "$cdrom" -boot order=dc,menu=on \
+		-drive file="$volume",format=qcow2,if=virtio,aio=native,cache.direct=on \
+		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22
+}
+
+qemu-start-win () {
+	local cdrom=""
+	local cdrom_virtio=""
+	local mem="2G"
+	local smp="2"
+	local ssh="10022"
+	local volume=""
+	while [[ $# -gt 0 ]]
+	do
+		case "$1" in
+			-h|--help)
+				echo "qemu-start -v|--volume <volume> [-c|--cdrom <iso>] " \
+					"[-m|--mem <ram-size><G|M|K> (default $mem)] " \
+					"[-s|--smp <num-cpus> (defaul $smp)] [--ssh <ssh-fwd-port> (default $ssh)]"
+				exit 0
+				;;
+			-c|--cdrom)
+				cdrom="$2"
+				shift
+				shift
+				;;
+			--cdrom-virtio)
+				cdrom_virtio="$2"
+				shift
+				shift
+				;;
+			-v|--volume)
+				volume="$2"
+				shift
+				shift
+				;;
+			-m|--mem)
+				mem="$2"
+				shift
+				shift
+				;;
+			-s|--smp)
+				smp="$2"
+				shift
+				shift
+				;;
+			--ssh)
+				ssh="$2"
+				shift
+				shift
+				;;
+			*)
+				printwarn "Unknown option: '$1'. Will be ignored."
+				shift
+				;;
+		esac
+	done
+
+	[ ! -f "$volume" ] && echo "ERROR: missing or invalid volume." && exit 1
+	[ -n "$cdrom" ] && [ ! -f "$cdrom" ] &&  echo "ERROR: invalid cdrom file." && exit 1
+
+	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu -device virtio-balloon \
+		-object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-pci,id=rng0 \
+		-cpu max,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time -smp "$smp" -m "$mem" \
+		-vga virtio -display sdl,gl=on \
+		-drive file="$cdrom",index=2,media=cdrom -boot order=dc,menu=on \
+		$([ "$cdrom_virtio" ] && echo "-drive file=${cdrom_virtio},index=3,media=cdrom" ) \
 		-drive file="$volume",format=qcow2,if=virtio,aio=native,cache.direct=on \
 		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22
 }

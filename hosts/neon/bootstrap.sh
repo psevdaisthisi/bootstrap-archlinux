@@ -81,8 +81,20 @@ printinfo "+ --------------------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.fat -F32 /dev/nvme0n1p1 && sleep 1
 mkfs.f2fs -f /dev/nvme0n1p2 && sleep 1
-cryptsetup --verbose luksFormat /dev/nvme0n1p3 && sleep 1
-cryptsetup open /dev/nvme0n1p3 root && sleep 1
+
+luks_format_success="no"
+while [ "$luks_format_success" = "no" ]; do
+	cryptsetup --verbose luksFormat /dev/nvme0n1p3
+	[ $? -eq 0 ] && luks_format_success="yes"
+done
+
+luks_mount_success="no"
+while [ "$luks_mount_success" = "no" ]; do
+	cryptsetup open /dev/nvme0n1p3 root
+	[ $? -eq 0 ] && luks_mount_success="yes"
+done
+sleep 1
+
 mkfs.f2fs -O encrypt -f /dev/mapper/root && sleep 1
 mkfs.f2fs -O encrypt -f /dev/nvme0n1p4 && sleep 1
 

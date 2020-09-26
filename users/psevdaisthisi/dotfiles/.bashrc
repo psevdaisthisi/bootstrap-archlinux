@@ -261,7 +261,7 @@ qemu-start () {
 				shift
 				;;
 			*)
-				printwarn "Unknown option: '$1'. Will be ignored."
+				echo "Unknown option: '$1'. Will be ignored."
 				shift
 				;;
 		esac
@@ -287,6 +287,7 @@ qemu-start-win () {
 	local smp="2"
 	local ssh="10022"
 	local volume=""
+	local igvt=""
 	while [[ $# -gt 0 ]]
 	do
 		case "$1" in
@@ -326,8 +327,12 @@ qemu-start-win () {
 				shift
 				shift
 				;;
+			--igvt)
+				igvt="yes"
+				shift
+				;;
 			*)
-				printwarn "Unknown option: '$1'. Will be ignored."
+				echo "Unknown option: '$1'. Will be ignored."
 				shift
 				;;
 		esac
@@ -335,15 +340,23 @@ qemu-start-win () {
 
 	[ ! -f "$volume" ] && echo "ERROR: missing or invalid volume." && exit 1
 	[ -n "$cdrom" ] && [ ! -f "$cdrom" ] &&  echo "ERROR: invalid cdrom file." && exit 1
+	[ "$igvt" ] &&
+		local igvt_uuid="$(uuidgen)" &&
+		echo "$igvt_uuid" | sudo tee -a "/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/create"
 
-	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu -device virtio-balloon \
+	$([ "$igvt" ] && echo "sudo ") \
+	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu,caching-mode=on -device virtio-balloon \
+		$([ "$igvt" ] && echo "-device vfio-pci,sysfsdev=/sys/bus/mdev/devices/$igvt_uuid,display=on,x-igd-opregion=on,ramfb=on,driver=vfio-pci-nohotplug") \
 		-object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-pci,id=rng0 \
 		-cpu max,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time -smp "$smp" -m "$mem" \
-		-vga virtio -display sdl,gl=on \
+		-vga none -display gtk,gl=on \
+		-usb -device usb-tablet \
 		-drive file="$cdrom",index=2,media=cdrom -boot order=dc,menu=on \
 		$([ "$cdrom_virtio" ] && echo "-drive file=${cdrom_virtio},index=3,media=cdrom" ) \
 		-drive file="$volume",format=qcow2,if=virtio,aio=native,cache.direct=on \
-		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22
+		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22,smb=$(pwd)
+
+	[ "$igvt" ] && echo 1 | sudo tee -a "/sys/bus/pci/devices/0000:00:02.0/${igvt_uuid}/remove"
 }
 
 random-wallpaper () {

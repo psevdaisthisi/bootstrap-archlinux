@@ -221,11 +221,19 @@ qemu-snapshot () {
 }
 
 qemu-start () {
-	local cdrom=""
-	local mem="2G"
-	local smp="2"
-	local ssh="10022"
-	local volume=""
+
+	local cdroms=()
+	local volumes=()
+
+	local num_cpu_cores=""
+	local ram_size=""
+
+	local ssh_port=""
+	local enable_igvt=false
+
+	local firmware_type="bios"
+	local gest_type="linux"
+
 	while [[ $# -gt 0 ]]
 	do
 		case "$1" in
@@ -236,28 +244,42 @@ qemu-start () {
 				exit 0
 				;;
 			-c|--cdrom)
-				cdrom="$2"
+				cdroms=(${cdroms[@]} "$2")
+				shift
+				shift
+				;;
+			-f|--firmware-type)
+				firmware_type="$2"
+				shift
+				shift
+				;;
+			-g|--guest-type)
+				guest_type="$2"
+				shift
+				shift
+				;;
+			-n|--num-cpu-cores)
+				num_cpu_cores="$2"
+				shift
+				shift
+				;;
+			-r|--ram-size)
+				ram_size="$2"
+				shift
+				shift
+				;;
+			-s|--ssh-port)
+				ssh_port="$2"
 				shift
 				shift
 				;;
 			-v|--volume)
-				volume="$2"
+				volumes=(${volumes[@]} "$2")
 				shift
 				shift
 				;;
-			-m|--mem)
-				mem="$2"
-				shift
-				shift
-				;;
-			-s|--smp)
-				smp="$2"
-				shift
-				shift
-				;;
-			--ssh)
-				ssh="$2"
-				shift
+			--enable-igvt)
+				enable_igvt=true
 				shift
 				;;
 			*)
@@ -267,96 +289,34 @@ qemu-start () {
 		esac
 	done
 
-	[ ! -f "$volume" ] && echo "ERROR: missing or invalid volume." && exit 1
-	[ -n "$cdrom" ] && [ ! -f "$cdrom" ] &&  echo "ERROR: invalid cdrom file." && exit 1
+	$($enable_igvt) &&
+	echo "Creating iGVT device..." &&
+	local igvt_dev_uuid="$(uuidgen)" &&
+	echo "$igvt_dev_uuid" | sudo tee -a "/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/create" > /dev/null &&
+	local qemu_igvt_device="-device vfio-pci,sysfsdev=/sys/bus/mdev/devices/$igvt_dev_uuid,display=on,x-igd-opregion=on,ramfb=on,driver=vfio-pci-nohotplug"
 
-	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu -device virtio-balloon \
+	$([ $($enable_igvt) ] && echo "sudo ") \
+	qemu-system-x86_64 -enable-kvm -machine q35 -m "$ram_size" \
+		$([ "$guest_type" = "linux" ] && echo "-cpu max" ) \
+		$([ "$guest_type" = "windows" ] && echo "-cpu max,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time") \
+		$([ "$firmware_type" = "uefi" ] && echo "-drive file="/usr/share/edk2-ovmf/x64/OVMF_CODE.fd",if=pflash,format=raw,readonly=on") \
+		$([ "$firmware_type" = "uefi" ] && echo "-drive file="/usr/share/edk2-ovmf/x64/OVMF_VARS.fd",if=pflash,format=raw,readonly=on") \
+		-smp "cores=$num_cpu_cores" \
+		-device intel-iommu,caching-mode=on \
+		-device virtio-balloon \
+		$([ $($enable_igvt) ] && echo "$qemu_igvt_device") \
 		-object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-pci,id=rng0 \
-		-cpu max -smp "$smp" -m "$mem" -vga virtio -display sdl,gl=on \
-		-drive file="/usr/share/edk2-ovmf/x64/OVMF_CODE.fd",if=pflash,format=raw,readonly=on \
-		-drive file="/usr/share/edk2-ovmf/x64/OVMF_VARS.fd",if=pflash,format=raw,readonly=on \
-		-cdrom "$cdrom" -boot order=dc,menu=on \
-		-drive file="$volume",format=qcow2,if=virtio,aio=native,cache.direct=on \
-		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22
-}
-
-qemu-start-win () {
-	local cdrom=""
-	local cdrom_virtio=""
-	local mem="2G"
-	local smp="2"
-	local ssh="10022"
-	local volume=""
-	local igvt=""
-	while [[ $# -gt 0 ]]
-	do
-		case "$1" in
-			-h|--help)
-				echo "qemu-start -v|--volume <volume> [-c|--cdrom <iso>] " \
-					"[-m|--mem <ram-size><G|M|K> (default $mem)] " \
-					"[-s|--smp <num-cpus> (defaul $smp)] [--ssh <ssh-fwd-port> (default $ssh)]"
-				exit 0
-				;;
-			-c|--cdrom)
-				cdrom="$2"
-				shift
-				shift
-				;;
-			--cdrom-virtio)
-				cdrom_virtio="$2"
-				shift
-				shift
-				;;
-			-v|--volume)
-				volume="$2"
-				shift
-				shift
-				;;
-			-m|--mem)
-				mem="$2"
-				shift
-				shift
-				;;
-			-s|--smp)
-				smp="$2"
-				shift
-				shift
-				;;
-			--ssh)
-				ssh="$2"
-				shift
-				shift
-				;;
-			--igvt)
-				igvt="yes"
-				shift
-				;;
-			*)
-				echo "Unknown option: '$1'. Will be ignored."
-				shift
-				;;
-		esac
-	done
-
-	[ ! -f "$volume" ] && echo "ERROR: missing or invalid volume." && exit 1
-	[ -n "$cdrom" ] && [ ! -f "$cdrom" ] &&  echo "ERROR: invalid cdrom file." && exit 1
-	[ "$igvt" ] &&
-		local igvt_uuid="$(uuidgen)" &&
-		echo "$igvt_uuid" | sudo tee -a "/sys/devices/pci0000:00/0000:00:02.0/mdev_supported_types/i915-GVTg_V5_4/create"
-
-	$([ "$igvt" ] && echo "sudo ") \
-	qemu-system-x86_64 -enable-kvm -machine q35 -device intel-iommu,caching-mode=on -device virtio-balloon \
-		$([ "$igvt" ] && echo "-device vfio-pci,sysfsdev=/sys/bus/mdev/devices/$igvt_uuid,display=on,x-igd-opregion=on,ramfb=on,driver=vfio-pci-nohotplug") \
-		-object rng-random,filename=/dev/random,id=rng0 -device virtio-rng-pci,id=rng0 \
-		-cpu max,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time -smp "$smp" -m "$mem" \
-		-vga none -display gtk,gl=on \
+		$([ $($enable_igvt) ] && echo "-vga none -display gtk,gl=on") \
+		$([ ! $($enable_igvt) ] && echo "-vga virtio -display gtk,gl=on") \
 		-usb -device usb-tablet \
-		-drive file="$cdrom",index=2,media=cdrom -boot order=dc,menu=on \
-		$([ "$cdrom_virtio" ] && echo "-drive file=${cdrom_virtio},index=3,media=cdrom" ) \
-		-drive file="$volume",format=qcow2,if=virtio,aio=native,cache.direct=on \
-		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh"-:22,smb=$(pwd)
+		-boot order=dc,menu=on \
+		$(for v in ${volumes[@]}; do echo "-drive file=$v,format=qcow2,if=virtio,aio=native,cache.direct=on"; done) \
+		$(for i in ${!cdroms[@]}; do echo "-drive file=${cdroms[$i]},index=$(($i + 2)),media=cdrom,readonly=on"; done) \
+		-nic user,model=virtio-net-pci,hostfwd=tcp::"$ssh_port"-:22,smb=$(pwd)
 
-	[ "$igvt" ] && echo 1 | sudo tee -a "/sys/bus/pci/devices/0000:00:02.0/${igvt_uuid}/remove"
+	$($enable_igvt) &&
+		echo "Destroying iGVT device..." &&
+		echo 1 | sudo tee -a "/sys/bus/pci/devices/0000:00:02.0/${igvt_dev_uuid}/remove" > /dev/null
 }
 
 random-wallpaper () {

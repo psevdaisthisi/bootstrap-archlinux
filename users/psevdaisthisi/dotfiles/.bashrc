@@ -232,15 +232,18 @@ qemu-start () {
 	local enable_igvt=false
 
 	local firmware_type="bios"
-	local gest_type="linux"
+	local guest_type="linux"
 
 	while [[ $# -gt 0 ]]
 	do
 		case "$1" in
 			-h|--help)
-				echo "qemu-start -v|--volume <volume> [-c|--cdrom <iso>] " \
-					"[-m|--mem <ram-size><G|M|K> (default $mem)] " \
-					"[-s|--smp <num-cpus> (defaul $smp)] [--ssh <ssh-fwd-port> (default $ssh)]"
+				echo "qemu-start -n|--num-cpu-cores <n> -r|--ram-size <n><K|G|T> -s|--ssh-port <n>"
+				echo "[-c|--cdrom <cdrom-file>]"
+				echo "[-f|--firmware-type bios|uefi (default $firmware_type)]"
+				echo "[-g|--guest-type linux|windows (default $guest_type)]"
+				echo "[-v|--volume <volume-file>]"
+				echo "[--enable-igvt]"
 				exit 0
 				;;
 			-c|--cdrom)

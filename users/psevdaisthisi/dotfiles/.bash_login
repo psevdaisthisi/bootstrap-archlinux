@@ -14,7 +14,7 @@ if [ -z "$agent_status" ]; then
 fi
 
 if [ -z "$DISPLAY" ] && [ $XDG_VTNR -eq 1 ] && [ "$TERM" != "screen" ]; then
-	command -v startx &> /dev/null && exec startx -- -keeptty &> ~/.local/share/xorg/tty.log
+	command -v startx &> /dev/null && exec startx -- -keeptty -ardelay 190 -arinterval 15 &> ~/.local/share/xorg/tty.log
 elif [ "$TERM" = "linux" ]; then
 	sudo kbdrate -s -d 190 -r 100
 fi

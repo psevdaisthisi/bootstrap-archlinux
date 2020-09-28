@@ -90,9 +90,9 @@ super + comma
 
 # --- system ---
 super + Return
-	/usr/bin/alacritty --command tmux
-super + shift + Return
 	/usr/bin/alacritty --dimensions 230 70 --command tmux
+super + shift + Return
+	/usr/bin/alacritty --command tmux
 
 super + shift + n
 	/usr/bin/firefox -private-window

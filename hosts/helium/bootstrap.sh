@@ -157,8 +157,8 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
              htop intel-gpu-tools intel-undervolt iotop libva-utils lshw lsof man
              neovim nmap nnn openbsd-netcat openssh p7zip pbzip2 pigz powertop
-             progress ripgrep svt-av1 svt-hevc svt-vp9 time tmux tree unzip
-             usleep which)
+             progress ripgrep samba svt-av1 svt-hevc svt-vp9 time tmux tree unzip
+             usbutils usleep which)
 _pkgs_dev=(autoconf automake binaryen binutils bison clang cmake ctags diffutils
            docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git go go-tools
            lldb m4 make ninja openssl-1.0 perf pkgconf python python-pip qemu

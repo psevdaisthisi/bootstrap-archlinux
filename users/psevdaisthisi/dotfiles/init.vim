@@ -207,14 +207,14 @@ hi link CocErrorFloat Pmenu
 hi CocHighlightText ctermfg=black ctermbg=green
 hi link CocWarningFloat Pmenu
 hi CocWarningSign ctermfg=yellow
-hi ColorColumn ctermfg=none ctermbg=darkgray
+hi ColorColumn ctermfg=none ctermbg=darkgrey
 hi CursorLineNR cterm=reverse
 hi Error ctermfg=black ctermbg=red
 hi ErrorMsg ctermfg=black ctermbg=red
 hi Folded ctermfg=none ctermbg=darkgrey
-hi Pmenu ctermfg=lightgrey ctermbg=darkgrey
+hi Pmenu ctermfg=lightgrey ctermbg=238
 hi PmenuSel ctermfg=black ctermbg=yellow
-hi PmenuSBar ctermfg=lightgrey ctermbg=darkgray
+hi PmenuSBar ctermfg=lightgrey ctermbg=darkgrey
 hi PmenuThumb ctermfg=none ctermbg=lightgrey
 hi Search ctermfg=black ctermbg=darkblue
 hi SearchLight ctermfg=black ctermbg=yellow

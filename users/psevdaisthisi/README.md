@@ -1,4 +1,26 @@
-## Desktop (sxhkd)
+# Arch Linux notes
+
+## Software Update
+
+#### AUR
+- Check for updates: `$ git pull`
+- Install version at checked-out commit: `$ makepkg -sirc`
+
+### Pacman
+- Refresh: `$ sudo pacman -Sy`
+- List outdated: `$ pacman -Qu`
+- Update: `$ sudo pacman -Sy`
+
+### pip
+- List outdated: `$ pip list --user --outdated`
+- Update: `$ pip list --user --upgrade <pkg>...`
+
+### neovim
+- Update Plug's plugins: `$ nvim +PlugUpgrade +PlugClean +PlugUpdate +qa`
+- Update Coc's plugins: `$ nvim +CocUpdateSync +qa`
+
+
+## Desktop Chords (sxhkd)
 
 #### Windows
 | Chord                   | Action                                            |

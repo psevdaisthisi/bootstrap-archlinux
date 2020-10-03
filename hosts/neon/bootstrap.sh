@@ -164,9 +164,9 @@ printinfo "+ -------------------------- +"
 _pkgs_base=(base intel-ucode linux-lts linux-firmware)
 _pkgs_drivers=(intel-media-driver libva mesa ntfs-3g vulkan-intel
                xf86-video-intel)
-_pkgs_sys=(avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils f2fs-tools
-           fakeroot findutils fish fscrypt gptfdisk grub iwd lz4 pacman parted
-           patch pulseaudio rng-tools sudo xz zip zstd)
+_pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
+           f2fs-tools fakeroot findutils fish fscrypt gptfdisk grub iwd lz4
+           pacman parted patch pulseaudio rng-tools sudo xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
              htop intel-gpu-tools intel-undervolt iotop libva-utils lshw lsof man

@@ -13,12 +13,15 @@
 
 ### pip
 - List outdated: `$ pip list --user --outdated`
-- Update: `$ pip list --user --upgrade <pkg>...`
+- Update: `$ pip install --user --upgrade <pkg>...`
 
 ### neovim
 - Update Plug's plugins: `$ nvim +PlugUpgrade +PlugClean +PlugUpdate +qa`
 - Update Coc's plugins: `$ nvim +CocUpdateSync +qa`
 
+### NodeJS/NVM
+- List latest LTS: `$ nvm ls-remote --lts`
+- Install specific LTS: `$ nvm install --lts=<name|version>`
 
 ## Desktop Chords (sxhkd)
 

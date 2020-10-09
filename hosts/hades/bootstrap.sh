@@ -149,9 +149,9 @@ printinfo "+ -------------------------- +"
 printinfo "| Installing Pacman packages |"
 printinfo "+ -------------------------- +"
 _pkgs_base=(base intel-ucode linux-lts linux-firmware)
-_pkgs_drivers=(intel-media-driver libva libva-mesa-driver libvdpau mesa ntfs-3g
-               mesa-vdpau nvidia-lts nvidia-utils vulkan-intel vulkan-radeon
-               xf86-video-intel)
+_pkgs_drivers=(intel-media-driver libva libva-intel-driver libva-mesa-driver
+               libvdpau mesa ntfs-3g mesa-vdpau nvidia-lts nvidia-utils
+               vulkan-intel vulkan-radeon xf86-video-intel)
 _pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
            f2fs-tools fakeroot findutils fish fscrypt gptfdisk grub iwd lz4
            nss-mdns pacman parted patch pulseaudio rng-tools sudo xz zip zstd)

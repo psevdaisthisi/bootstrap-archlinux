@@ -138,7 +138,7 @@ do
 	git checkout "$_tag"
 
 	[ "$_name" = "spotify" ] && \
-		curl -sS https://download.spotify.com/debian/pubkey.gpg | gpg --import -
+		curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 
 	makepkg -sirc --noconfirm --needed
 

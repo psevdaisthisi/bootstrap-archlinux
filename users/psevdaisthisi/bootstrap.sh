@@ -117,11 +117,12 @@ pip install --user wheel compiledb conan flashfocus grip pynvim pywal
 
 cd "$NVM_DIR";
 git clone https://github.com/nvm-sh/nvm.git .
-git checkout "v0.35.3"
+git checkout "v0.36.0"
 cd "$script_path"
 
 . "$HOME/.bashrc"
 source-nvm
+nvm ls-remote
 nvm install --lts=erbium
 nvm use default erbium
 

@@ -6,12 +6,17 @@ source misc.sh
 
 _host=""
 _user=""
+_stepping=""
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
 		-h|--host)
 			_host="$2"
 			shift
+			shift
+			;;
+		-s|--stepping)
+			_stepping="--stepping"
 			shift
 			;;
 		-u|--user)
@@ -33,6 +38,7 @@ printinfo "\n"
 printinfo "+ ------------------------------- +"
 printinfo "| Installing and configuring GRUB |"
 printinfo "+ ------------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 grub-install --target=x86_64-efi --efi-directory="/boot/efi" --bootloader-id=arch_grub --recheck && sync
 cp /etc/default/grub /etc/default/grub.backup
 cp sysfiles/grub /etc/default/grub
@@ -49,6 +55,7 @@ printinfo "\n"
 printinfo "+ ------------------------------------ +"
 printinfo "| Configuring userspace FS encryption |"
 printinfo "+ ------------------------------------ +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 fscrypt setup
 fscrypt setup "/home/${_user}/vol1"
 fscrypt setup "/home/${_user}/vol2"
@@ -66,6 +73,7 @@ printinfo "\n"
 printinfo "+ ------------------------------------------------ +"
 printinfo "| Configuring mirrors, timezone, clock and locales |"
 printinfo "+ ------------------------------------------------ +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cp sysfiles/mirrorlist /etc/pacman.d/mirrorlist
 chmod u=rw,g=r,o=r /etc/pacman.d/mirrorlist
 
@@ -91,6 +99,7 @@ printinfo "\n"
 printinfo "+ ---------------------------- +"
 printinfo "| Configuring Hostname and DNS |"
 printinfo "+ ---------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 echo "$_host" > /etc/hostname
 { echo -e "127.0.0.1\tlocalhost";
   echo -e "::1\tlocalhost";
@@ -110,6 +119,7 @@ printinfo "\n"
 printinfo "+ -------------------- +"
 printinfo "| Configuring services |"
 printinfo "+ -------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 systemctl enable avahi-daemon.service
 systemctl enable bluetooth.service
 systemctl enable dhcpcd.service
@@ -175,6 +185,7 @@ printinfo "\n"
 printinfo "+ ---------------------- +"
 printinfo "| Creating user accounts |"
 printinfo "+ ---------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 echo "/usr/bin/bash" >> /etc/shells
 chsh -s "/usr/bin/bash"
 
@@ -191,7 +202,7 @@ printinfo "| Configuring user accounts |"
 printinfo "+ ------------------------- +"
 chown "${_user}:${_user}" "${_user}/bootstrap.sh"
 su -s /bin/bash -c \
-	"cd /tmp/chroot/ && . \"${_user}/bootstrap.sh\" --host ${_host} --user ${_user}" \
+	"cd /tmp/chroot/ && . \"${_user}/bootstrap.sh\" --host ${_host} --user ${_user} ${_stepping}" \
 	--login ${_user}
 
 printinfo "\n"

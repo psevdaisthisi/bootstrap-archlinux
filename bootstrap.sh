@@ -42,7 +42,7 @@ done
 [ ! -f "users/${_user}/bootstrap.sh" ] && \
 	printerr "Missing user bootstrap file at 'users/${_user}/bootstrap.sh'." && exit 1
 
-bash "hosts/${_host}/bootstrap.sh" --host ${_host} --user ${_user} "$_stepping"
+bash "hosts/${_host}/bootstrap.sh" --host ${_host} --user ${_user} ${_stepping}
 
 printsucc "\n"
 printsucc "The ${_host} host and the user account ${_user} were successfully configured!"

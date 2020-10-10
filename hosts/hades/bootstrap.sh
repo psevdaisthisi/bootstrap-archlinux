@@ -7,12 +7,17 @@ source "../../misc.sh"
 _host=""
 _user=""
 _rootmnt="$(mktemp -d)"
+_stepping=""
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
 		-h|--host)
 			_host="$2"
 			shift
+			shift
+			;;
+		-s|--stepping)
+			_stepping="--stepping"
 			shift
 			;;
 		-u|--user)
@@ -33,6 +38,7 @@ printinfo "\n"
 printinfo "+ --------------------- +"
 printinfo "| Erasing storage disks |"
 printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 sgdisk --zap-all /dev/nvme0n1 && sleep 2
 sgdisk --zap-all /dev/sda && sleep 2
 
@@ -40,6 +46,7 @@ printinfo "\n"
 printinfo "+ ------------------------- +"
 printinfo "| Partitioning /dev/nvme0n1 |"
 printinfo "+ ------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 parted /dev/nvme0n1 mklabel gpt && sleep 1
 
 _starts_at=1
@@ -61,6 +68,7 @@ printinfo "\n"
 printinfo "+ --------------------- +"
 printinfo "| Partitioning /dev/sda |"
 printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 parted /dev/sda mklabel gpt && sleep 1
 
 # All space as a data partition (vol2)
@@ -70,6 +78,7 @@ printinfo "\n"
 printinfo "+ --------------------------------------------------------------- +"
 printinfo "| Formatting /dev/nvme0n1 and setting up LUKS encrypted partition |"
 printinfo "+ --------------------------------------------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.fat -F32 /dev/nvme0n1p1 && sleep 1
 mkfs.f2fs -f /dev/nvme0n1p2 && sleep 1
 
@@ -94,12 +103,14 @@ printinfo "\n"
 printinfo "+ ------------------- +"
 printinfo "| Formatting /dev/sda |"
 printinfo "+ ------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.f2fs -O encrypt -f /dev/sda1 && sleep 1
 
 printinfo "\n"
 printinfo "+ ------------------- +"
 printinfo "| Mounting partitions |"
 printinfo "+ ------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mount /dev/mapper/root "$_rootmnt" && sleep 1
 
 mkdir -p "$_rootmnt"/boot
@@ -116,12 +127,14 @@ printinfo "\n"
 printinfo "+ --------------------- +"
 printinfo "| Updating mirrors list |"
 printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cp sysfiles/mirrorlist /etc/pacman.d/mirrorlist
 
 printinfo "\n"
 printinfo "+ --------------------- +"
 printinfo "| Configuring initramfs |"
 printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 
@@ -148,6 +161,7 @@ printinfo "\n"
 printinfo "+ -------------------------- +"
 printinfo "| Installing Pacman packages |"
 printinfo "+ -------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 _pkgs_base=(base intel-ucode linux-lts linux-firmware)
 _pkgs_drivers=(intel-media-driver libva libva-intel-driver libva-mesa-driver
                libvdpau mesa ntfs-3g mesa-vdpau nvidia-lts nvidia-utils
@@ -186,6 +200,7 @@ printinfo "\n"
 printinfo "+ ---------------- +"
 printinfo "| Setting up fstab |"
 printinfo "+ ---------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cp sysfiles/fstab "$_rootmnt"/etc/fstab
 sed -i -r "s/<username>/${_user}/" "$_rootmnt"/etc/fstab
 chmod u=r,g=r,o=r "$_rootmnt"/etc/fstab
@@ -200,12 +215,13 @@ cp -r {.,../../misc.sh,../../users/${_user}} "$_rootmnt"/tmp/chroot
 mount -t proc /proc "$_rootmnt"/proc/
 mount --rbind /sys "$_rootmnt"/sys/
 mount --rbind /dev "$_rootmnt"/dev/
-chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh --host ${_host} --user ${_user}
+chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh --host ${_host} --user ${_user} ${_stepping}
 
 printinfo "\n"
 printinfo "+ --------------------- +"
 printinfo "| Unmounting partitions |"
 printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 umount "${_rootmnt}/home/${_user}/vol2"
 umount "${_rootmnt}/home/${_user}/vol1"
 umount "$_rootmnt"/boot/efi

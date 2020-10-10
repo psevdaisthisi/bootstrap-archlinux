@@ -212,7 +212,7 @@ cp -r {.,../../misc.sh,../../users/${_user}} "$_rootmnt"/tmp/chroot
 mount -t proc /proc "$_rootmnt"/proc/
 mount --rbind /sys "$_rootmnt"/sys/
 mount --rbind /dev "$_rootmnt"/dev/
-chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh --host ${_host} --user ${_user} "$_stepping"
+chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh --host ${_host} --user ${_user} ${_stepping}
 
 printinfo "\n"
 printinfo "+ --------------------- +"

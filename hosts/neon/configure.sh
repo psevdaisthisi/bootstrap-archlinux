@@ -202,7 +202,7 @@ printinfo "| Configuring user accounts |"
 printinfo "+ ------------------------- +"
 chown "${_user}:${_user}" "${_user}/bootstrap.sh"
 su -s /bin/bash -c \
-	"cd /tmp/chroot/ && . \"${_user}/bootstrap.sh\" --host ${_host} --user ${_user} $_stepping" \
+	"cd /tmp/chroot/ && . \"${_user}/bootstrap.sh\" --host ${_host} --user ${_user} ${_stepping}" \
 	--login ${_user}
 
 printinfo "\n"
@@ -210,9 +210,19 @@ printinfo "+ ------------------ +"
 printinfo "| Accounts passwords |"
 printinfo "+ ------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
+
 printwarn "Set root password!"
-passwd root
+passwd_root_success="no"
+while [ "$passwd_root_success" = "no" ]; do
+	passwd root
+	[ $? -eq 0 ] && passwd_root_success="yes"
+done
+
 printwarn "Set ${_user} password!"
-passwd "${_user}"
+passwd_user_success="no"
+while [ "$passwd_user_success" = "no" ]; do
+	passwd ${_user}
+	[ $? -eq 0 ] && passwd_user_success="yes"
+done
 
 popd > /dev/null

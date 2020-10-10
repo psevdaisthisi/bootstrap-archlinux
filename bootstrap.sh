@@ -1,6 +1,8 @@
 # Examples
 # long:   $ bash bootstrap.sh --host helium --user psevdaisthisi
 # short:  $ bash bootstrap.sh -h helium -u psevdaisthisi
+# There's also -s or --stepping to pause the execution at before every major
+# step. Very useful to find issues during the setup.
 
 script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 source "${script_path}/misc.sh"

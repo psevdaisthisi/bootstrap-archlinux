@@ -122,7 +122,7 @@ cd "$script_path"
 
 . "$HOME/.bashrc"
 source-nvm
-nvm ls-remote
+nvm ls-remote --lts=erbium
 nvm install --lts=erbium
 nvm use default erbium
 

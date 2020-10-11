@@ -175,7 +175,7 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              lshw lsof man neovim nmap nnn nvidia-settings nvtop openbsd-netcat
              openssh p7zip pbzip2 pigz powertop progress ripgrep samba svt-av1
              svt-hevc svt-vp9 time tmux tree turbostat unzip usbutils usleep
-             vdpauinfo which)
+             vdpauinfo which xdg-user-dirs)
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags cuda
            cudnn diffutils docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git
            go go-tools intel-media-sdk lldb m4 make ninja openssl-1.0 perf

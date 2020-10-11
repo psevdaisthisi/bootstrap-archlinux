@@ -65,10 +65,7 @@ mkdir -p "$HOME/vol2/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
   echo "export GOPATH=\"$HOME/vol2/.cache/go/lib\"";
   echo "export IPFS_PATH=\"$HOME/vol2/.cache/ipfs\"";
   echo "export NPM_CONFIG_CACHE=\"$HOME/vol2/.cache/npm\"";
-  echo "export NVM_DIR=\"$HOME/vol2/.cache/nvm\"";
-  echo "export XDG_CONFIG_HOME=\"$HOME/.config\"";
-  echo "export XDG_DESKTOP_DIR=\"/tmp\"";
-  echo "export XDG_DOWNLOAD_DIR=\"$HOME/vol2/junk\""; } > "$HOME/.env.sh"
+  echo "export NVM_DIR=\"$HOME/vol2/.cache/nvm\""; } > "$HOME/.env.sh"
 
 { echo "set --export HOST \"${_host}\"";
   echo "set --export AUR \"$HOME/vol1/aur\"";
@@ -86,10 +83,7 @@ mkdir -p "$HOME/vol2/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
   echo "set --export GOPATH \"$HOME/vol2/.cache/go/lib\"";
   echo "set --export IPFS_PATH \"$HOME/vol2/.cache/ipfs\"";
   echo "set --export NPM_CONFIG_CACHE \"$HOME/vol2/.cache/npm\"";
-  echo "set --export NVM_DIR \"$HOME/vol2/.cache/nvm\"";
-  echo "set --export XDG_CONFIG_HOME \"$HOME/.config\"";
-  echo "set --export XDG_DESKTOP_DIR \"/tmp\"";
-  echo "set --export XDG_DOWNLOAD_DIR \"$HOME/vol2/junk\""; } > "$HOME/.env.fish"
+  echo "set --export NVM_DIR \"$HOME/vol2/.cache/nvm\""; } > "$HOME/.env.fish"
 
 . "$HOME/.env.sh"
 

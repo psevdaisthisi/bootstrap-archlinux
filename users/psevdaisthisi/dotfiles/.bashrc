@@ -138,7 +138,7 @@ mnt () {
 	local part=$(lsblk --list --output NAME,SIZE,FSTYPE,TYPE,MOUNTPOINT |
 		grep 'part[[:space:]]*$' | grep --invert-match 'crypto_LUKS' |
 		awk '{printf "/dev/%s %s %s\n",$1,$2,$3}' |
-		fzf | awk '{print $1}')
+		fzf --reverse | awk '{print $1}')
 	[ -z "$part" ] && return
 
 	# Find the directories at $MOUNT that aren't already used as a mount point.
@@ -439,7 +439,7 @@ umnt () {
 	done
 
 	[ "$mounts" ] &&
-	local mountpoint=$(printf "$mounts" | tail -n +2 | fzf | awk '{print $1}') ||
+	local mountpoint=$(printf "$mounts" | tail -n +2 | fzf --reverse | awk '{print $1}') ||
 	{ echo "No mounted volumes at $MOUNT/" && exit 1; }
 
 	if [[ "$mountpoint" =~ vcrypt ]]; then

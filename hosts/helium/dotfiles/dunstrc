@@ -9,7 +9,7 @@
 # -------
 monitor = 0
 follow = mouse
-geometry = "500x5-25+60"
+geometry = "500x5+25+60"
 indicate_hidden = yes
 shrink = no
 transparency = 0

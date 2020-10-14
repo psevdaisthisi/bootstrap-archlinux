@@ -39,7 +39,7 @@
 | `Win-mouse2 (drag)`     | Resize focused floating window.                   |
 | `Win-S-[0-9]`           | Send window to _nth_ desktop.                     |
 | `Win-{a,s,w,d}`         | Send window to monitor left, down, up, right.     |
-| `Win-backslash`         | Flash focused.                                    |
+| `Win-period`            | Flash focused.                                    |
 | `Win-apostrophe`        | Swap window with the largest one.                 |
 | `Win-u`                 | Jump to oldest urgent window.                     |
 | `Win-f or Win-C-mouse1` | Toggle floating.                                  |

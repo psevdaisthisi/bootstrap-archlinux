@@ -6,7 +6,7 @@ super + {h,j,k,l}
 super + {q,shift + q}
 	bspc node {--close,--kill}
 
-super + backslash
+super + period
 	nc_flash_window
 
 super + ctrl + {h,j,k,l}

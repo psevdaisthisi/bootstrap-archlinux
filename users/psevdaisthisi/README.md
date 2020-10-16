@@ -20,6 +20,7 @@
 - Update Coc's plugins: `$ nvim +CocUpdateSync +qa`
 
 ### NodeJS/NVM
+Start a Bash session and then import NVM's scripts: `$ source-nvm`
 - List latest LTS: `$ nvm ls-remote --lts`
 - Install specific LTS: `$ nvm install --lts=<name|version>`
 

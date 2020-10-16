@@ -121,10 +121,10 @@ nvm install --lts=erbium
 nvm use default erbium
 
 cd "$AUR"
-_aur_packages=(bit@master brave-bin@master git-delta-bin@master grv@master
-               mongodb-compass@master mprime-bin@master polybar@master
-               postman-bin@master rslsync@master spotify@master teams@master)
-for pkg in ${_aur_packages[*]}
+_aur_pkgs=(bit@master brave-bin@master git-delta-bin@master grv@master
+           mongodb-compass@master mprime-bin@master polybar@master
+           postman-bin@master rslsync@master spotify@master teams@master)
+for pkg in ${_aur_pkgs[*]}
 do
 	_name=${pkg%%@*}
 	_tag=${pkg##*@}

@@ -139,7 +139,7 @@ sed -i -r "s/<hostname>/${HOST}/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"
 sed -i -r "s/<username>/psevdaisthisi/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"
 xdg-user-dirs-update --set DESKTOP "$HOME"
 xdg-user-dirs-update --set DOWNLOAD "$JUNK"
-rmdir $HOME/{Documents,Music,Pictures,Public,Templates,Videos}
+rmdir $HOME/{Documents,Music,Pictures,Public,Templates,Videos} &> /dev/null
 
 if [ -f "$HOME/.cache/wal/colors.sh" ]; then
 	. "$HOME/.cache/wal/colors.sh"

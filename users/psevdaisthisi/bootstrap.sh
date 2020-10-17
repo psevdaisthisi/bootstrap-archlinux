@@ -103,7 +103,7 @@ printinfo "+ ------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 sudo usermod -aG docker ${_user}
 sudo mkdir -p /etc/docker
-echo -e "{\n\t\"data-root\": \"${$VOL2}/.cache/docker\"\n}" | sudo tee /etc/docker/daemon.json
+echo -e "{\n\t\"data-root\": \"${VOL2}/.cache/docker\"\n}" | sudo tee /etc/docker/daemon.json
 
 sudo curl --connect-timeout 13 --retry 5 --retry-delay 2 \
 	-L 'https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip' -o JetBrainsMono.zip

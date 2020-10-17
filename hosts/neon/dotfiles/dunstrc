@@ -9,7 +9,7 @@
 # -------
 monitor = 0
 follow = mouse
-geometry = "500x5+30+80"
+geometry = "500x5+25+60"
 indicate_hidden = yes
 shrink = no
 transparency = 0
@@ -24,7 +24,7 @@ idle_threshold = 120
 
 # Text
 # ----
-font = Monospace 12
+font = Monospace 10
 line_height = 0
 markup = full
 format = "<b>%s</b>\n%b"

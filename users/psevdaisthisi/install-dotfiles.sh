@@ -42,6 +42,8 @@ if [ ! -f "${_vimplug_dir}/plug.vim" ]; then
 		"$_vimplug_url" -sS -H "Accept:application/vnd.github.v3.raw" -o "${_vimplug_dir}/plug.vim"
 fi
 
+[ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="$HOME/.config"
+
 mkdir -p \
 	"${HOME}/.local/bin" \
 	"${HOME}/.local/share/dunst" \
@@ -124,7 +126,7 @@ if [ "$_fix_permissions" = "true" ]; then
 fi
 cp "${_host_dir}/dotfiles/.bashrc" "${HOME}/.bashrc.aux"
 cp "${_host_dir}/dotfiles/.pam_environment" "${HOME}/"
-sed -i -r "s|<xdg-config-home>|${HOME}/.config|" "${HOME}/.pam_environment"
+sed -i -r "s|<xdg-config-home>|${XDG_CONFIG_HOME}|" "${HOME}/.pam_environment"
 cp "${_host_dir}/dotfiles/.Xresources" "${HOME}/"
 cp "${_host_dir}/dotfiles/.energypolicy.sh" "${XDG_CONFIG_HOME}/"
 cp "${_host_dir}/dotfiles/alacritty.yml" "${XDG_CONFIG_HOME}/alacritty/"
@@ -137,6 +139,7 @@ sed -i -r "s/<hostname>/${HOST}/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"
 sed -i -r "s/<username>/psevdaisthisi/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"
 xdg-user-dirs-update --set DESKTOP "$HOME"
 xdg-user-dirs-update --set DOWNLOAD "$JUNK"
+rmdir "$HOME/{Documents}"
 
 if [ -f "$HOME/.cache/wal/colors.sh" ]; then
 	. "$HOME/.cache/wal/colors.sh"

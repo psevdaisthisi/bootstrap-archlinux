@@ -40,7 +40,7 @@ printinfo "| Creating user directories and environment variables |"
 printinfo "+ --------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 _vol1="$HOME/vol1"
-[ -d "$HOME/vol2" ] && _vol2="$HOME/vol2" || _vol2="$HOME/vol1"
+[ -d "$HOME/vol2" ] && _vol2="$HOME/vol2" || _vol2="${_vol1}"
 mkdir "$HOME/.ssh"
 mkdir -p "$HOME/.config/fontconfig"
 mkdir -p "$HOME/.local/bin/go"
@@ -135,7 +135,7 @@ do
 	git clone https://aur.archlinux.org/"$_name".git && cd "$_name"
 	git checkout "$_tag"
 
-	[ "$_name" = "spotify" ] && \
+	[ "$_name" = "spotify" ] &&
 	curl --connect-timeout 13 --retry 5 --retry-delay 2 \
 		-sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 

@@ -39,51 +39,53 @@ printinfo "+ --------------------------------------------------- +"
 printinfo "| Creating user directories and environment variables |"
 printinfo "+ --------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
+_vol1="$HOME/vol1"
+[ -d "$HOME/vol2" ] && _vol2="$HOME/vol2" || _vol2="$HOME/vol1"
 mkdir "$HOME/.ssh"
 mkdir -p "$HOME/.config/fontconfig"
 mkdir -p "$HOME/.local/bin/go"
 mkdir -p "$HOME/.local/share/xorg"
 mkdir -p "$HOME/.local/share/fonts"
 mkdir -p "$HOME/mount"
-mkdir -p "$HOME/vol1/"{aur,sync/.resilio}
-mkdir -p "$HOME/vol2/"{code,junk}
-mkdir -p "$HOME/vol2/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
+mkdir -p "${_vol1}/"{aur,sync/.resilio}
+mkdir -p "${_vol2}/"{code,junk}
+mkdir -p "${_vol2}/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
 
 { echo "export HOST=\"${_host}\"";
-  echo "export AUR=\"$HOME/vol1/aur\"";
-  echo "export CODE=\"$HOME/vol2/code\"";
-  echo "export JUNK=\"$HOME/vol2/junk\"";
+  echo "export AUR=\"${_vol1}/aur\"";
+  echo "export CODE=\"${_vol2}/code\"";
+  echo "export JUNK=\"${_vol2}/junk\"";
   echo "export MOUNT=\"$HOME/mount\"";
-  echo "export SYNC=\"$HOME/vol1/sync\"";
-  echo "export WALLPAPERS=\"$HOME/vol1/sync/wallpapers\"";
-  echo "export VOL1=\"$HOME/vol1\"";
-  echo "export VOL2=\"$HOME/vol2\"";
-  echo "export CONAN_USER_HOME=\"$HOME/vol2/.cache\"";
+  echo "export SYNC=\"${_vol1}/sync\"";
+  echo "export WALLPAPERS=\"${_vol1}/sync/wallpapers\"";
+  echo "export VOL1=\"${_vol1}\"";
+  echo "export VOL2=\"${_vol2}\"";
+  echo "export CONAN_USER_HOME=\"${_vol2}/.cache\"";
   echo "export GOBIN=\"$HOME/.local/bin/go\"";
-  echo "export GOCACHE=\"$HOME/vol2/.cache/go/build\"";
-  echo "export GOMODCACHE=\"$HOME/vol2/.cache/go/mod\"";
-  echo "export GOPATH=\"$HOME/vol2/.cache/go/lib\"";
-  echo "export IPFS_PATH=\"$HOME/vol2/.cache/ipfs\"";
-  echo "export NPM_CONFIG_CACHE=\"$HOME/vol2/.cache/npm\"";
-  echo "export NVM_DIR=\"$HOME/vol2/.cache/nvm\""; } > "$HOME/.env.sh"
+  echo "export GOCACHE=\"${_vol2}/.cache/go/build\"";
+  echo "export GOMODCACHE=\"${_vol2}/.cache/go/mod\"";
+  echo "export GOPATH=\"${_vol2}/.cache/go/lib\"";
+  echo "export IPFS_PATH=\"${_vol2}/.cache/ipfs\"";
+  echo "export NPM_CONFIG_CACHE=\"${_vol2}/.cache/npm\"";
+  echo "export NVM_DIR=\"${_vol2}/.cache/nvm\""; } > "$HOME/.env.sh"
 
 { echo "set --export HOST \"${_host}\"";
-  echo "set --export AUR \"$HOME/vol1/aur\"";
-  echo "set --export CODE \"$HOME/vol2/code\"";
-  echo "set --export JUNK \"$HOME/vol2/junk\"";
+  echo "set --export AUR \"${_vol1}/aur\"";
+  echo "set --export CODE \"${_vol2}/code\"";
+  echo "set --export JUNK \"${_vol2}/junk\"";
   echo "set --export MOUNT \"$HOME/mount\"";
-  echo "set --export SYNC \"$HOME/vol1/sync\"";
-  echo "set --export WALLPAPERS \"$HOME/vol1/sync/wallpapers\"";
-  echo "set --export VOL1 \"$HOME/vol1\"";
-  echo "set --export VOL2 \"$HOME/vol2\"";
-  echo "set --export CONAN_USER_HOME \"$HOME/vol2/.cache\"";
+  echo "set --export SYNC \"${_vol1}/sync\"";
+  echo "set --export WALLPAPERS \"${_vol1}/sync/wallpapers\"";
+  echo "set --export VOL1 \"${_vol1}\"";
+  echo "set --export VOL2 \"${_vol2}\"";
+  echo "set --export CONAN_USER_HOME \"${_vol2}/.cache\"";
   echo "set --export GOBIN \"$HOME/.local/bin/go\"";
-  echo "set --export GOCACHE \"$HOME/vol2/.cache/go/build\"";
-  echo "set --export GOMODCACHE \"$HOME/vol2/.cache/go/mod\"";
-  echo "set --export GOPATH \"$HOME/vol2/.cache/go/lib\"";
-  echo "set --export IPFS_PATH \"$HOME/vol2/.cache/ipfs\"";
-  echo "set --export NPM_CONFIG_CACHE \"$HOME/vol2/.cache/npm\"";
-  echo "set --export NVM_DIR \"$HOME/vol2/.cache/nvm\""; } > "$HOME/.env.fish"
+  echo "set --export GOCACHE \"${_vol2}/.cache/go/build\"";
+  echo "set --export GOMODCACHE \"${_vol2}/.cache/go/mod\"";
+  echo "set --export GOPATH \"${_vol2}/.cache/go/lib\"";
+  echo "set --export IPFS_PATH \"${_vol2}/.cache/ipfs\"";
+  echo "set --export NPM_CONFIG_CACHE \"${_vol2}/.cache/npm\"";
+  echo "set --export NVM_DIR \"${_vol2}/.cache/nvm\""; } > "$HOME/.env.fish"
 
 . "$HOME/.env.sh"
 

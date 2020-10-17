@@ -180,7 +180,7 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags cuda
            cudnn diffutils docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git
            go go-tools intel-media-sdk lldb m4 make man-pages ninja openssl-1.0
-           perf pkgconf python python-pip qemu qemu-arch-extra
+           perf pgadmin4 pkgconf postgresql python python-pip qemu qemu-arch-extra
            spirv-llvm-translator spirv-headers spirv-tools strace tokei
            vulkan-extra-layers vulkan-extra-tools vulkan-headers vulkan-icd-loader
            vulkan-mesa-layers vulkan-tools vulkan-validation-layers wabt zig)

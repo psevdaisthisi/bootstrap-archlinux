@@ -166,7 +166,8 @@ _pkgs_drivers=(intel-media-driver libva libva-intel-driver mesa ntfs-3g
                vulkan-intel xf86-video-intel)
 _pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
            f2fs-tools fakeroot findutils fish fscrypt gptfdisk grub iwd lz4
-           nss-mdns pacman parted patch pulseaudio rng-tools sudo xz zip zstd)
+           nss-mdns pacman parted patch pulseaudio rng-tools sudo wireguard-lts
+           xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
              htop inotify-tools intel-gpu-tools intel-undervolt iotop libva-utils

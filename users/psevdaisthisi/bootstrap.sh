@@ -105,7 +105,8 @@ sudo usermod -aG docker ${_user}
 sudo mkdir -p /etc/docker
 echo -e "{\n\t\"data-root\": \"$HOME/vol2/.cache/docker\"\n}" | sudo tee /etc/docker/daemon.json
 
-sudo curl -L 'https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip' -o JetBrainsMono.zip
+sudo curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+	-L 'https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/JetBrainsMono.zip' -o JetBrainsMono.zip
 unzip JetBrainsMono.zip -d "$HOME/.local/share/fonts/"
 fc-cache --force
 
@@ -135,7 +136,8 @@ do
 	git checkout "$_tag"
 
 	[ "$_name" = "spotify" ] && \
-		curl -sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
+	curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+		-sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 
 	makepkg -sirc --noconfirm --needed
 

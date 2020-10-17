@@ -44,7 +44,8 @@ cp /etc/default/grub /etc/default/grub.backup
 cp sysfiles/grub /etc/default/grub
 chmod u=rw,g=r,o=r /etc/default/grub
 
-curl "https://github.com/psevdaisthisi/poly-dark/archive/master.zip" -L -o /tmp/polydark.zip
+curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+	"https://github.com/psevdaisthisi/poey-dark/archive/master.zip" -L -o /tmp/polydark.zip
 unzip /tmp/polydark.zip -d /tmp
 rm /tmp/poly-dark-master/install.sh
 mv /tmp/poly-dark-master /boot/grub/themes/polydark

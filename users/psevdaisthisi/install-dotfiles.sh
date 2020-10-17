@@ -38,7 +38,8 @@ if [ ! -f "${_vimplug_dir}/plug.vim" ]; then
 	_vimplug_url="https://api.github.com/repos/junegunn/vim-plug/contents/plug.vim"
 	echo "$0": Downloading "$_vimplug_url" ...
 	mkdir -p "$_vimplug_dir"
-	curl "$_vimplug_url" -sS -H "Accept:application/vnd.github.v3.raw" -o "${_vimplug_dir}/plug.vim"
+	curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+		"$_vimplug_url" -sS -H "Accept:application/vnd.github.v3.raw" -o "${_vimplug_dir}/plug.vim"
 fi
 
 mkdir -p \

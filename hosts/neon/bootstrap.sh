@@ -135,7 +135,7 @@ mkdir -p "$_rootmnt"/usr/local/share/kbd/keymaps
   echo "altgr keycode 46 = cent"; } > "$_rootmnt"/usr/local/share/kbd/keymaps/recap.map
 { echo "KEYMAP=pt-latin1";
   echo "KEYMAP_TOGGLE=/usr/local/share/kbd/keymaps/uncap.map";
-  echo "FONT=ter-118n"; } > "$_rootmnt"/etc/vconsole.conf
+  echo "FONT=ter-116n"; } > "$_rootmnt"/etc/vconsole.conf
 
 printinfo "\n"
 printinfo "+ -------------------------- +"

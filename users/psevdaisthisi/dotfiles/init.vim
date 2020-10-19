@@ -107,23 +107,11 @@ if has('unix') || has('mac')
 endif
 
 " Highlighting
-Plug 'peterrincker/vim-searchlight'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'justinmk/vim-syntax-extra'
-Plug 'dag/vim-fish'
-Plug 'elzr/vim-json'
 let g:vim_json_syntax_conceal = 0
-Plug 'pangloss/vim-javascript'
-Plug 'posva/vim-vue'
-Plug 'godlygeek/tabular' " required for vim-markdown
-Plug 'plasticboy/vim-markdown'
 let g:vim_markdown_folding_disabled = 1
-Plug 'fatih/vim-go'
-Plug 'leafgarland/typescript-vim'
-Plug 'ziglang/zig.vim'
-if has('mac')
-	Plug 'kovetskiy/vim-bash'
-endif
+Plug 'godlygeek/tabular' " required for vim-markdown
+Plug 'peterrincker/vim-searchlight'
+Plug 'sheerun/vim-polyglot'
 
 " Code completion and navigation
 let g:coc_global_extensions = [ 'coc-calc', 'coc-clangd', 'coc-cmake', 'coc-css',

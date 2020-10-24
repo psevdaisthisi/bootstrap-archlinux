@@ -1,3 +1,4 @@
 {
-	"coc.preferences.extensionUpdateCheck": "never"
+	"coc.preferences.extensionUpdateCheck": "never",
+	"javascript.suggestionActions.enabled": false
 }

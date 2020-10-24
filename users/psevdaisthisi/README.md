@@ -9,7 +9,7 @@
 ### Pacman
 - Refresh: `$ sudo pacman -Sy`
 - List outdated: `$ pacman -Qu`
-- Update: `$ sudo pacman -Sy`
+- Update: `$ sudo pacman -Syu`
 
 ### pip
 - List outdated: `$ pip list --user --outdated`

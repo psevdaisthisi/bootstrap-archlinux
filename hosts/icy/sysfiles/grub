@@ -1,0 +1,14 @@
+# GRUB boot loader configuration
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=1
+GRUB_DISTRIBUTOR="Arch"
+GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet audit=0 mitigations=off nmi_watchdog=0 selinux=0"
+GRUB_CMDLINE_LINUX="cryptdevice=/dev/nvme0n1p3:root:allow-discards"
+GRUB_PRELOAD_MODULES="part_gpt part_msdos"
+GRUB_ENABLE_CRYPTODISK=y
+GRUB_TIMEOUT_STYLE=menu
+GRUB_TERMINAL_INPUT=console
+GRUB_GFXPAYLOAD_LINUX=keep
+GRUB_DISABLE_LINUX_UUID=true
+GRUB_DISABLE_RECOVERY=true
+GRUB_THEME=/boot/grub/themes/polydark/theme.txt

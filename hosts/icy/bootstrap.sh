@@ -118,7 +118,7 @@ printinfo "+ --------------------- +"
 pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 
-_initramfs_modules="amdgpu rfkill"
+_initramfs_modules=""
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
 sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf

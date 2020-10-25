@@ -145,10 +145,10 @@ printinfo "+ -------------------------- +"
 _pkgs_base=(base amd-ucode linux-lts linux-firmware)
 _pkgs_drivers=(libva libva-mesa-driver mesa mesa-vdpau ntfs-3g vulkan-radeon
                xf86-video-amdgpu)
-_pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
-           f2fs-tools fakeroot findutils fish fscrypt gptfdisk grub iwd lz4
-           nss-mdns pacman parted patch pulseaudio rng-tools sudo wireguard-lts
-           xz zip zstd)
+_pkgs_sys=(atk avahi bash bluez brightnessctl coreutils dhcpcd efibootmgr
+           exfat-utils f2fs-tools fakeroot findutils fish fscrypt gptfdisk
+           grub iwd lz4 nss-mdns pacman parted patch pulseaudio rng-tools
+           sudo wireguard-lts xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
              htop inotify-tools iotop libva-utils lshw lsof man neovim nmap nnn

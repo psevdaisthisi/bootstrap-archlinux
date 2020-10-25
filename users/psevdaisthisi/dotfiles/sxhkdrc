@@ -130,7 +130,9 @@ Print
 	source $HOME/.bashrc && screenshot
 
 XF86KbdBrightness{Up,Down}
-	source $HOME/.bashrc && set-backlight {inc,dec}
+	brightnessctl set {+5%,5%-}
+XF86MonBrightness{Up,Down}
+	brightnessctl set {+5%,5%-}
 
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle

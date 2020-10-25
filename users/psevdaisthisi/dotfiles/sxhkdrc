@@ -129,11 +129,16 @@ super + e
 Print
 	source $HOME/.bashrc && screenshot
 
+XF86KbdBrightness{Up,Down}
+	source $HOME/.bashrc && set-backlight {inc,dec}
+
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle
 XF86Audio{Lower,Raise}Volume
 	pactl set-sink-volume @DEFAULT_SINK@ {-1%,+1%}
 
+XF86AudioMicMute
+	pactl set-source-mute @DEFAULT_SOURCE@ toggle
 shift + XF86AudioMute
 	pactl set-source-mute @DEFAULT_SOURCE@ toggle
 shift + XF86AudioLowerVolume +

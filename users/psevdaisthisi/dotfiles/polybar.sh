@@ -21,6 +21,7 @@ export TMP_ICON="$(echo -e "\uf2c8 ")"
 export WIF_ICON="$(echo -e "\uf1eb")"
 export BAT_ICON="$(echo -e "\uf241 ")"
 export PCO_ICON="$(echo -e "\uf1e6 ")"
+export BFL_ICON="$(echo -e "\uf240 ")"
 export BKL_ICON="$(echo -e "\uf0eb ")"
 
 [ ! -p "$HOME/.local/share/polybar/polytimer-fifo" ] &&

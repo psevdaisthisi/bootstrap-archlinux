@@ -2,6 +2,9 @@
 
 . "$HOME/.bashrc"
 
+[ -f "$XDG_CONFIG_HOME/.brightnessctl" ] &&
+	brightnessctl set $(cat "$XDG_CONFIG_HOME/.brightnessctl") > /dev/null
+
 export agent_status=$(ps -U $USER | grep 'ssh-agent')
 
 if [ -f "$XDG_CONFIG_HOME/.energypolicy" ]; then

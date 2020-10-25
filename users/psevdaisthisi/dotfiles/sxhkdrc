@@ -129,10 +129,9 @@ super + e
 Print
 	source $HOME/.bashrc && screenshot
 
-XF86KbdBrightness{Up,Down}
-	brightnessctl set {+5%,5%-}
 XF86MonBrightness{Up,Down}
-	brightnessctl set {+5%,5%-}
+	brightnessctl set {+5%,5%-}; \
+	echo "$(brightnessctl get)" > "$XDG_CONFIG_HOME/.brightnessctl"
 
 XF86AudioMute
 	pactl set-sink-mute @DEFAULT_SINK@ toggle

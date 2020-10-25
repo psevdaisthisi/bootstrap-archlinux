@@ -19,6 +19,8 @@ export MUT_ICON="$(echo -e "\uf6a9")"
 export PWR_ICON="$(echo -e "\uf011")"
 export TMP_ICON="$(echo -e "\uf2c8 ")"
 export WIF_ICON="$(echo -e "\uf1eb")"
+export BAT_ICON="$(echo -e "\uf241 ")"
+export PCO_ICON="$(echo -e "\uf1e6 ")"
 
 [ ! -p "$HOME/.local/share/polybar/polytimer-fifo" ] &&
 	mkfifo "$HOME/.local/share/polybar/polytimer-fifo"

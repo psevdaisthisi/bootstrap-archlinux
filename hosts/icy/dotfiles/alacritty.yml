@@ -8,7 +8,7 @@ scrolling:
 font:
   normal:
     family: monospace
-  size: 8.0
+  size: 6.5
   offset:
     x: 0
     y: 1

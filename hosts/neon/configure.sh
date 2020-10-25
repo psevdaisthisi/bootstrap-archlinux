@@ -59,6 +59,7 @@ printinfo "+ ------------------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 fscrypt setup
 fscrypt setup "/home/${_user}/vol1"
+fscrypt setup "/home/${_user}/vol2"
 
 # Setup auto unlocking at login as described in:
 # https://wiki.archlinux.org/index.php/Fscrypt#PAM_module
@@ -196,6 +197,8 @@ passwd --delete "${_user}"
 chown "${_user}:${_user}" "/home/${_user}"
 chgrp users "/home/${_user}/vol1"
 chmod g=rwx "/home/${_user}/vol1"
+chgrp users "/home/${_user}/vol2"
+chmod g=rwx "/home/${_user}/vol2"
 
 printinfo "+ ------------------------- +"
 printinfo "| Configuring user accounts |"

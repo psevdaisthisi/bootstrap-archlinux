@@ -40,6 +40,7 @@ printinfo "| Erasing storage disks |"
 printinfo "+ --------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 sgdisk --zap-all /dev/nvme0n1 && sleep 2
+sgdisk --zap-all /dev/sda && sleep 2
 
 printinfo "\n"
 printinfo "+ ------------------------- +"
@@ -62,6 +63,17 @@ parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 
 
 _starts_at=${_ends_at} # All remaining space as a data partition (vol1)
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "100%" && sleep 1
+printinfo "\n"
+
+printinfo "\n"
+printinfo "+ --------------------- +"
+printinfo "| Partitioning /dev/sda |"
+printinfo "+ --------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
+parted /dev/sda mklabel gpt && sleep 1
+
+_starts_at=1 # All space as a data partition (vol2)
+parted /dev/sda mkpart primary "${_starts_at}MiB" "100%" && sleep 1
 printinfo "\n"
 
 printinfo "\n"
@@ -90,6 +102,12 @@ mkfs.f2fs -O encrypt -f /dev/nvme0n1p4 && sleep 1
 
 printinfo "\n"
 printinfo "+ ------------------- +"
+printinfo "| Formatting /dev/sda |"
+printinfo "+ ------------------- +"
+mkfs.f2fs -O encrypt -f /dev/sda1 && sleep 1
+
+printinfo "\n"
+printinfo "+ ------------------- +"
 printinfo "| Mounting partitions |"
 printinfo "+ ------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
@@ -99,9 +117,10 @@ mkdir -p "$_rootmnt"/boot
 mount /dev/nvme0n1p2 "$_rootmnt"/boot
 mkdir -p "$_rootmnt"/boot/efi
 mount /dev/nvme0n1p1 "$_rootmnt"/boot/efi
-
 mkdir -p "$_rootmnt"/home/${_user}/vol1
 mount /dev/nvme0n1p4 "$_rootmnt"/home/${_user}/vol1
+mkdir -p "$_rootmnt"/home/${_user}/vol2
+mount /dev/sda1"$_rootmnt"/home/${_user}/vol2
 
 printinfo "\n"
 printinfo "+ --------------------- +"
@@ -203,6 +222,7 @@ printinfo "| Unmounting partitions |"
 printinfo "+ --------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 umount "${_rootmnt}/home/${_user}/vol1"
+umount "${_rootmnt}/home/${_user}/vol2"
 umount "$_rootmnt"/boot/efi
 umount "$_rootmnt"/boot
 sync

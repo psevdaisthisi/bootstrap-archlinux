@@ -47,7 +47,7 @@ super + {f,t,z}
 	bspc node --state {~floating,~tiled,~fullscreen}
 super + shift + {f,t}
 	selection=$(bspc query --nodes --node .window.!hidden.!sticky --desktop); \
-	for node in ${selection}; do bspc node $node --state {floating,tiled}; done
+	for node in ${selection}; do bspc node $node --state {~floating,~tiled}; done
 
 super + m
 	bspc node --flag hidden

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+bspc monitor eDP --reset-desktops 1 2 3 4 5 6 7 8 9 10
+
+[ "$(xrandr | grep 'DisplayPort-0 connected')" ] &&
+	bspc monitor DisplayPort-0 --reset-desktops 1 2 3 4 5 6 7 8 9 10

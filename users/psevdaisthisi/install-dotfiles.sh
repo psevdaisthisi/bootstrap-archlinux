@@ -127,6 +127,7 @@ fi
 cp "${_host_dir}/dotfiles/.bashrc" "${HOME}/.bashrc.host"
 cp "${_host_dir}/dotfiles/.pam_environment" "${HOME}/"
 sed -i -r "s|<xdg-config-home>|${XDG_CONFIG_HOME}|" "${HOME}/.pam_environment"
+cp "${_host_dir}/dotfiles/.xinitrc" "${HOME}/.xinitrc.host"
 cp "${_host_dir}/dotfiles/.Xresources" "${HOME}/"
 cp "${_host_dir}/dotfiles/.energypolicy.sh" "${XDG_CONFIG_HOME}/"
 cp "${_host_dir}/dotfiles/alacritty.yml" "${XDG_CONFIG_HOME}/alacritty/"

@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-killall -q dunst
-killall -q flashfocus
-killall -q sxhkd
-killall -q redshift
+script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+
 killall -q picom
+killall -q redshift
+killall -q sxhkd
+killall -q flashfocus
+killall -q dunst
+killall -q polybar
 
 while pgrep -u $UID -x picom > /dev/null; do sleep 1;done &&
 	rm -rf "$HOME/.local/share/picom/log" && picom -b
@@ -34,7 +37,7 @@ color13=$(echo "$db" | grep '^\*\.color13:' | awk '{print $2}')
 color14=$(echo "$db" | grep '^\*\.color14:' | awk '{print $2}')
 color15=$(echo "$db" | grep '^\*\.color15:' | awk '{print $2}')
 
-bspc monitor --reset-desktops 1 2 3 4 5 6 7 8 9 10
+source "$script_path/bspwmrc.host"
 
 bspc config automatic_scheme alternate
 bspc config border_width 0

@@ -124,16 +124,18 @@ if [ "$_fix_permissions" = "true" ]; then
 	sudo chmod -R u=rw,g=r,o=r "${_host_dir}"/dotfiles
 	sudo chmod u=rwx,g=r,o=r "${_host_dir}"/dotfiles
 fi
-cp "${_host_dir}/dotfiles/.bashrc" "${HOME}/.bashrc.aux"
+cp "${_host_dir}/dotfiles/.bashrc" "${HOME}/.bashrc.host"
 cp "${_host_dir}/dotfiles/.pam_environment" "${HOME}/"
 sed -i -r "s|<xdg-config-home>|${XDG_CONFIG_HOME}|" "${HOME}/.pam_environment"
 cp "${_host_dir}/dotfiles/.Xresources" "${HOME}/"
 cp "${_host_dir}/dotfiles/.energypolicy.sh" "${XDG_CONFIG_HOME}/"
 cp "${_host_dir}/dotfiles/alacritty.yml" "${XDG_CONFIG_HOME}/alacritty/"
 cp "${_host_dir}/dotfiles/brave-flags.conf" "${XDG_CONFIG_HOME}/"
-cp "${_host_dir}/dotfiles/config.fish" "${XDG_CONFIG_HOME}/fish/config.aux.fish"
+cp "${_host_dir}/dotfiles/bspwmrc" "${XDG_CONFIG_HOME}/polybar/bspwm.host"
+cp "${_host_dir}/dotfiles/config.fish" "${XDG_CONFIG_HOME}/fish/config.host.fish"
 cp "${_host_dir}/dotfiles/dunstrc" "${XDG_CONFIG_HOME}/dunst/"
 cp "${_host_dir}/dotfiles/polybar.conf" "${XDG_CONFIG_HOME}/polybar/config"
+cp "${_host_dir}/dotfiles/polybar.sh" "${XDG_CONFIG_HOME}/polybar/start.host.sh"
 cp "${_host_dir}/dotfiles/rslsync.conf" "${XDG_CONFIG_HOME}/rslsync/"
 sed -i -r "s/<hostname>/${HOST}/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"
 sed -i -r "s/<username>/psevdaisthisi/" "${XDG_CONFIG_HOME}/rslsync/rslsync.conf"

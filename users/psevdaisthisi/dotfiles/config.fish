@@ -1,7 +1,7 @@
 set fish_greeting
 
 source "$HOME/.env.fish"
-source "$XDG_CONFIG_HOME/fish/config.aux.fish"
+source "$XDG_CONFIG_HOME/fish/config.host.fish"
 
 set -g __fish_git_prompt_show_informative_status 1
 set -g __fish_git_prompt_hide_untrackedfiles 1

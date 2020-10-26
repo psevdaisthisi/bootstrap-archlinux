@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-killall -q polybar
+script_path="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 # Wait until the process has been terminated
 while pgrep -u $UID -x polybar > /dev/null; do sleep 1; done
@@ -27,4 +27,4 @@ export BKL_ICON="$(echo -e "\uf0eb ")"
 [ ! -p "$HOME/.local/share/polybar/polytimer-fifo" ] &&
 	mkfifo "$HOME/.local/share/polybar/polytimer-fifo"
 
-polybar main &> "$HOME/.local/share/polybar/main.log" &
+source "$script_path/start.host.sh"

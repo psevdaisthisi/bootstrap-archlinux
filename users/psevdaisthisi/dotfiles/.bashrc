@@ -1,7 +1,7 @@
 PS1="\[$(tput setaf 5)\]\A\[$(tput sgr0)\] \w$([ -n "$NNNLVL" ] && echo " nnn:$NNNLVL") \[$(tput setaf 6)\]➤ \[$(tput sgr0)\] "
 
 . "$HOME/.env.sh"
-. "$HOME/.bashrc.aux"
+. "$HOME/.bashrc.host"
 [ ! -v NVM_BIN ] && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 [ -r "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
 

@@ -60,9 +60,8 @@ _starts_at=${_ends_at}
 _ends_at=$((${_ends_at} + 64 * 1024)) # 96GiB root partition
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
 
-_starts_at=${_ends_at}
-_ends_at=$((${_ends_at} + 192 * 1024)) # 192GiB data partition (vol1)
-parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
+_starts_at=${_ends_at} # All remaining space as data partition (vol1)
+parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "100%" && sleep 1
 printinfo "\n"
 
 printinfo "\n"

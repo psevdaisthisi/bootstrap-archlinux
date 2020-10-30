@@ -175,8 +175,8 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              htop inotify-tools intel-gpu-tools intel-undervolt iotop libva-utils
              lshw lsof man neovim nmap nnn nvidia-settings nvtop openbsd-netcat
              openssh os-prober p7zip pbzip2 pigz powertop progress ripgrep samba
-             svt-av1 svt-hevc svt-vp9 tigervnc time tmux tree turbostat unzip
-             usbutils usleep vdpauinfo which xdg-user-dirs)
+             svt-av1 svt-hevc svt-vp9 thermald tigervnc time tmux tree turbostat
+             unzip usbutils usleep vdpauinfo which xdg-user-dirs)
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags cuda
            cudnn diffutils docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git
            go go-tools intel-media-sdk lldb ltrace m4 make man-pages ninja

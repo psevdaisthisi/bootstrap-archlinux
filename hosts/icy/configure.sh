@@ -127,8 +127,8 @@ systemctl enable docker.service
 systemctl enable fstrim.timer
 systemctl enable iwd.service
 systemctl enable rngd.service
-systemctl enable thermald.service
 systemctl enable sshd.service
+systemctl enable thermald.service
 
 cp /usr/share/doc/avahi/ssh.service /etc/avahi/services
 sed -i 's/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns/' /etc/nsswitch.conf

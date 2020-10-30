@@ -101,6 +101,7 @@ printinfo "+ ------------------------ +"
 printinfo "| Installing user software |"
 printinfo "+ ------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
+sudo usermod -aG video ${_user}
 sudo usermod -aG docker ${_user}
 sudo mkdir -p /etc/docker
 echo -e "{\n\t\"data-root\": \"${VOL2}/.cache/docker\"\n}" | sudo tee /etc/docker/daemon.json

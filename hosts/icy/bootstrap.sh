@@ -157,7 +157,7 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              tree turbostat unzip usbutils usleep vdpauinfo which xdg-user-dirs)
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags
            diffutils docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git go
-           go-tools lldb m4 make man-pages ninja openssl-1.0 perf pgadmin4
+           go-tools lldb ltrace m4 make man-pages ninja openssl-1.0 perf pgadmin4
            pkgconf postgresql python python-pip qemu qemu-arch-extra
            spirv-llvm-translator spirv-headers spirv-tools strace tokei
            vulkan-extra-layers vulkan-extra-tools vulkan-headers vulkan-icd-loader

@@ -188,8 +188,8 @@ _pkgs_x11=(bspwm dunst picom sxhkd xclip xorg-server xorg-xinit xorg-xinput
 _pkgs_fonts=(noto-fonts noto-fonts-emoji terminus-font ttf-font-awesome
              ttf-jetbrains-mono)
 _pkgs_apps=(alacritty arandr feh firefox libreoffice-still maim meld mesa-demos
-            mpv nomacs obs-studio pavucontrol pcmanfm-gtk3 pinta rofi redshift
-            signal-desktop slock sxiv veracrypt wireshark-qt)
+            mpv nomacs obs-studio pavucontrol pinta rofi redshift signal-desktop
+            slock sxiv thunar veracrypt wireshark-qt)
 
 pacman -Syy
 pacstrap -i "$_rootmnt" ${_pkgs_base[*]} ${_pkgs_drivers[*]} ${_pkgs_sys[*]} \

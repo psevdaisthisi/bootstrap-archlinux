@@ -124,7 +124,7 @@ super + ctrl + shift + l
 	slock
 
 super + e
-	pcmanfm
+	thunar
 
 Print
 	source $HOME/.bashrc && screenshot

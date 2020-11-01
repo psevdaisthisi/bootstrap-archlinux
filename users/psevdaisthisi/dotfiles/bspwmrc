@@ -37,7 +37,8 @@ color13=$(echo "$db" | grep '^\*\.color13:' | awk '{print $2}')
 color14=$(echo "$db" | grep '^\*\.color14:' | awk '{print $2}')
 color15=$(echo "$db" | grep '^\*\.color15:' | awk '{print $2}')
 
-source "$script_path/bspwmrc.host"
+[ -f "$script_path/bspwmrc.host" ] &&
+	source "$script_path/bspwmrc.host"
 
 bspc config automatic_scheme alternate
 bspc config border_width 0

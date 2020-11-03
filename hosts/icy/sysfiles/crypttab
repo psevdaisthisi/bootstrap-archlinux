@@ -1,0 +1,1 @@
+swap  /dev/nvme0n1p3  /dev/urandom  swap,discard,cipher=aes-cbc-essiv:sha256,size=256

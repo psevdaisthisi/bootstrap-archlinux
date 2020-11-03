@@ -57,6 +57,10 @@ _ends_at=$((${_ends_at} + 384)) # 384MiB boot partition
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
 
 _starts_at=${_ends_at}
+_ends_at=$((${_ends_at} + 8 * 1024)) # 8GiB swap partition
+parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
+
+_starts_at=${_ends_at}
 _ends_at=$((${_ends_at} + 96 * 1024)) # 96GiB root partition
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
 
@@ -71,22 +75,23 @@ printinfo "+ --------------------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.fat -F32 /dev/nvme0n1p1 && sleep 1
 mkfs.f2fs -f /dev/nvme0n1p2 && sleep 1
+mkswap /dev/nvme0n1p3 && sleep 1
 
 luks_format_success="no"
 while [ "$luks_format_success" = "no" ]; do
-	cryptsetup --verbose luksFormat /dev/nvme0n1p3
+	cryptsetup --verbose luksFormat /dev/nvme0n1p4
 	[ $? -eq 0 ] && luks_format_success="yes"
 done
 
 luks_mount_success="no"
 while [ "$luks_mount_success" = "no" ]; do
-	cryptsetup open /dev/nvme0n1p3 root
+	cryptsetup open /dev/nvme0n1p4 root
 	[ $? -eq 0 ] && luks_mount_success="yes"
 done
 sleep 1
 
 mkfs.f2fs -O encrypt -f /dev/mapper/root && sleep 1
-mkfs.f2fs -O encrypt -f /dev/nvme0n1p4 && sleep 1
+mkfs.f2fs -O encrypt -f /dev/nvme0n1p5 && sleep 1
 
 printinfo "\n"
 printinfo "+ ------------------- +"
@@ -100,7 +105,7 @@ mount /dev/nvme0n1p2 "$_rootmnt"/boot
 mkdir -p "$_rootmnt"/boot/efi
 mount /dev/nvme0n1p1 "$_rootmnt"/boot/efi
 mkdir -p "$_rootmnt"/home/${_user}/vol1
-mount /dev/nvme0n1p4 "$_rootmnt"/home/${_user}/vol1
+mount /dev/nvme0n1p5 "$_rootmnt"/home/${_user}/vol1
 
 printinfo "\n"
 printinfo "+ --------------------- +"
@@ -116,12 +121,15 @@ printinfo "+ --------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
+cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
+cp sysfiles/crypttab "$_rootmnt"/etc/crypttab
 
 _initramfs_modules=""
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
 sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r '/#COMPRESSION="lz4"/s/^#*//g' "$_rootmnt"/etc/mkinitcpio.conf
+cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 
 # The keymap needs to be configured earlier so initramfs uses the correct layout
 # for entering the disk decryption password.

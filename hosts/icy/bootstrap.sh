@@ -57,7 +57,7 @@ _ends_at=$((${_ends_at} + 384)) # 384MiB boot partition
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
 
 _starts_at=${_ends_at}
-_ends_at=$((${_ends_at} + 64 * 1024)) # 96GiB root partition
+_ends_at=$((${_ends_at} + 96 * 1024)) # 96GiB root partition
 parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
 
 _starts_at=${_ends_at} # All remaining space as data partition (vol1)

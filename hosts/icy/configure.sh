@@ -130,7 +130,7 @@ systemctl enable rngd.service
 systemctl enable sshd.service
 systemctl enable thermald.service
 
-cp /usr/share/doc/avahi/ssh.service /etc/avahi/services
+cp /usr/share/doc/avahi/ssh.service /etc/avahi/services/
 sed -i 's/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns/' /etc/nsswitch.conf
 
 cp sysfiles/bluetooth.conf /etc/bluetooth/main.conf
@@ -174,6 +174,7 @@ chmod -c 0440 /etc/sudoers
 
 sed -i -r 's/#SystemMaxUse=/SystemMaxUse=256M/' /etc/systemd/journald.conf
 sed -i -r 's/#user_allow_other/user_allow_other/' /etc/fuse.conf
+echo "vm.swappiness=10" >> /etc/sysctl.d/99-swappiness.conf
 echo "vm.vfs_cache_pressure=90" >> /etc/sysctl.d/99-swappiness.conf
 
 printinfo "\n"

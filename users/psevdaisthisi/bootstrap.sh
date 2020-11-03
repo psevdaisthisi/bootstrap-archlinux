@@ -47,7 +47,7 @@ mkdir -p "$HOME/.local/bin/go"
 mkdir -p "$HOME/.local/share/xorg"
 mkdir -p "$HOME/.local/share/fonts"
 mkdir -p "$HOME/mount"
-mkdir -p "${_vol1}/"{aur,sync/.resilio}
+mkdir -p "${_vol1}/"{aur,sync}
 mkdir -p "${_vol2}/"{code,junk}
 mkdir -p "${_vol2}/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
 

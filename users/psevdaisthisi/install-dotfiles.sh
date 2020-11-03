@@ -62,7 +62,7 @@ mkdir -p \
 	"${XDG_CONFIG_HOME}/nvim/nerdtree_plugin" \
 	"${XDG_CONFIG_HOME}/polybar" \
 	"${XDG_CONFIG_HOME}/pulse" \
-	"${XDG_CONFIG_HOME}/rslsync" \
+	"${XDG_CONFIG_HOME}/rslsync/cache" \
 	"${XDG_CONFIG_HOME}/sxhkd"
 
 if [ "$_fix_permissions" = "true" ]; then

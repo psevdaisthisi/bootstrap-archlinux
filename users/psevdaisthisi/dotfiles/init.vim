@@ -267,6 +267,10 @@ inoremap <silent><expr> <Tab>
 	\ pumvisible() ? "\<C-n>" :
 	\ <SID>check_back_space() ? "\<Tab>" :
 	\ coc#refresh()
+inoremap <silent><expr> <S-Tab>
+	\ pumvisible() ? "\<C-p>" :
+	\ <SID>check_back_space() ? "\<Tab>" :
+	\ coc#refresh()
 
 " Tabs-related mappings
 nnoremap th :tabfirst<CR>

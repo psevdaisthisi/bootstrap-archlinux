@@ -5,7 +5,7 @@ tabbed \- generic tabbed interface
 .B tabbed
 .RB [ \-c ]
 .RB [ \-d ]
-.RB [ \-h ]
+.RB [ \-k ]
 .RB [ \-s ]
 .RB [ \-v ]
 .RB [ \-g
@@ -13,10 +13,22 @@ tabbed \- generic tabbed interface
 .RB [ \-n
 .IR name ]
 .RB [ \-p
-.IR [ s +/- ] pos ]
+.RB [ s {+/-} ] \fIpos\fR ]
+.RB [ \-o
+.IR normbgcol ]
+.RB [ \-O
+.IR normfgcol ]
+.RB [ \-t
+.IR selbgcol ]
+.RB [ \-T
+.IR selfgcol ]
+.RB [ \-u
+.IR urgbgcol ]
+.RB [ \-U
+.IR urgfgcol ]
 .RB [ \-r
 .IR narg ]
-.IR [ command ... ]
+.RI [ "command ..." ]
 .SH DESCRIPTION
 .B tabbed
 is a simple tabbed container for applications which support XEmbed. Tabbed
@@ -36,21 +48,24 @@ detaches tabbed from the terminal and prints its XID to stdout.
 fill up tabbed again by spawning the provided command, when the last tab is
 closed. Mutually exclusive with -c.
 .TP
-.B \-h
-will print the usage of tabbed.
-.TP
 .BI \-g " geometry"
 defines the X11 geometry string, which will fixate the height and width of
 tabbed.
-Them form is [=][<width>{xX}<height>][{+-}<xoffset>{+-}<yoffset>]. See
+The syntax is
+.RI [=][ width {xX} height ][{+-} xoffset {+-} yoffset ].
+See
 .BR XParseGeometry (3)
 for further details.
+.TP
+.B \-k
+close foreground tabbed client (instead of tabbed and all clients) when
+WM_DELETE_WINDOW is sent.
 .TP
 .BI \-n " name"
 will set the WM_CLASS attribute to
 .I name.
 .TP
-.BI \-p " [ s +/-] pos"
+.BR \-p " [" s {+-}] \fIpos\fR
 will set the absolute or relative position of where to start a new tab. When
 .I pos
 is is given without 's' in front it is an absolute position. Then negative
@@ -70,20 +85,26 @@ with the window id, rather than appending it to the end.
 .B \-s
 will disable automatic spawning of the command.
 .TP
-.BI \-t " color"
-defines the selected background color.
-.IR #RGB ,
-.IR #RRGGBB ,
+.BI \-o " normbgcol"
+defines the normal background color.
+.RI # RGB ,
+.RI # RRGGBB ,
 and X color names are supported.
 .TP
-.BI \-T " color"
+.BI \-O " normfgcol"
+defines the normal foreground color.
+.TP
+.BI \-t " selbgcol"
+defines the selected background color.
+.TP
+.BI \-T " selfgbcol"
 defines the selected foreground color.
 .TP
-.BI \-u " color"
-defines the normal background color.
+.BI \-u " urgbgcol"
+defines the urgent background color.
 .TP
-.BI \-U " color"
-defines the normal foreground color.
+.BI \-U " urgfgbcol"
+defines the urgent foreground color.
 .TP
 .B \-v
 prints version information to stderr, then exits.
@@ -104,15 +125,21 @@ move selected tab one to the left
 .B Ctrl\-Shift\-k
 move selected tab one to the right
 .TP
+.B Ctrl\-Shift\-u
+toggle autofocus of urgent tabs
+.TP
 .B Ctrl\-Tab
 toggle between the selected and last selected tab
 .TP
-.B Ctrl\-t
+.B Ctrl\-`
 open dmenu to either create a new tab appending the entered string or select
 an already existing tab.
 .TP
 .B Ctrl\-q
 close tab
+.TP
+.B Ctrl\-u
+focus next urgent tab
 .TP
 .B Ctrl\-[0..9]
 jumps to nth tab
@@ -138,7 +165,7 @@ See the LICENSE file for the authors.
 .SH LICENSE
 See the LICENSE file for the terms of redistribution.
 .SH SEE ALSO
-.BR st (1)
+.BR st (1),
+.BR xembed (1)
 .SH BUGS
 Please report them.
-

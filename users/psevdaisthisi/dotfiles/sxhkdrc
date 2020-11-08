@@ -90,10 +90,9 @@ super + comma
 
 # --- system ---
 super + Return
-	/usr/bin/alacritty --dimensions 230 70 --command tmux
+	tabbed -c -p -1 -n "Alacritty" -g 1280x800 -r 2 alacritty --embed '' --command tmux
 super + shift + Return
-	/usr/bin/alacritty --command tmux
-
+	tabbed -c -p -1 -n "Alacritty" -r 2 alacritty --embed '' --command tmux
 super + shift + n
 	/usr/bin/firefox -private-window
 

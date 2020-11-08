@@ -10,6 +10,7 @@ source "${HOME}/.env.sh"
 
 _host_dir="../../hosts/$HOST"
 _fix_permissions="false"
+_install_tabbed="false"
 while [[ $# -gt 0 ]]
 do
 	case "$1" in
@@ -20,6 +21,10 @@ do
 			;;
 		--fix-permissions)
 			_fix_permissions="true"
+			shift
+			;;
+		--install-tabbed)
+			_install_tabbed="true"
 			shift
 			;;
 		*)
@@ -117,6 +122,14 @@ cp polybar/thermal.sh "${HOME}/.local/bin/polybar-thermal.sh"
 gcc polybar/polytimer.c -Wall -Wextra -O3 -march=native -o "${HOME}/.local/bin/polytimer"
 cp tmux/gitstat.sh "${HOME}/.local/bin/tmux-gitstat.sh"
 chmod u+x "${HOME}/.local/bin/tmux-gitstat.sh"
+if [ "$_install_tabbed" = "true" ]; then
+	cd tabbed
+	sudo make install &> /dev/null &&
+		printsucc "Compiling and installing tabbed... [DONE]" ||
+		printerr "Compiling and installing tabbed... [FAILED]"
+	make clean > /dev/null
+	cd - &> /dev/null
+fi
 cd "${_scriptdir}"
 
 if [ "$_fix_permissions" = "true" ]; then

@@ -94,7 +94,7 @@ printinfo "+ ------------------- +"
 printinfo "| Installing dotfiles |"
 printinfo "+ ------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
-. install-dotfiles.sh --host-dir ".." --fix-permissions
+. install-dotfiles.sh --host-dir ".." --fix-permissions --install-tabbed
 
 printinfo "\n"
 printinfo "+ ------------------------ +"

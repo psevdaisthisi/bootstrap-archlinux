@@ -176,6 +176,8 @@ set sidescroll=1
 set smartcase
 set splitbelow
 set splitright
+set title
+autocmd BufEnter * let &titlestring='nvim ' . expand('%:t')
 
 if has('unix') && exists('g:GuiLoaded')
 	colorscheme slate

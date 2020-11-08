@@ -172,7 +172,7 @@ static char winid[64];
 static char **cmd;
 static char *wmname = "tabbed";
 static const char *geometry;
-static Bool barvisibility = False;
+static Bool barvisibility = True;
 
 char *argv0;
 

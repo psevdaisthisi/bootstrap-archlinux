@@ -70,6 +70,7 @@ static Key keys[] = {
 
 static Key keyreleases[] = {
 	/* modifier             key           function  argument */
-	{ MODKEY|ShiftMask,     XK_Shift_L,     showbar,  { .i = 0 } },
-	{ MODKEY|ShiftMask,     XK_Control_L, showbar,  { .i = 0 } },
+	/* { MODKEY|ShiftMask,     XK_Shift_L,     showbar,  { .i = 0 } },
+	   { MODKEY|ShiftMask,     XK_Control_L, showbar,  { .i = 0 } }, */
+	{ 0,  0, 0, { 0 } },
 };

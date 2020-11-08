@@ -1,15 +1,17 @@
 #!/usr/bin/env sh
 
-while :
-do
-	allmuted="yes"
+printstatus () {
+	allmuted="true";
 
-	for is_muted in $(pactl list sources | grep Mute | awk '{print $2}')
-	do
-		[ $is_muted = "no" ] && allmuted="no" && break
-	done
+	echo "$1" | grep --silent "source" && {
+		for ismuted in $(pactl list sources | grep Mute | awk '{print $2}'); do
+			[ $ismuted = "no" ] && allmuted="false" && break
+		done
+		[ "$allmuted" = "true" ] && echo -e "\uf131" || echo -e "\uf130";
+	}
+}
 
-	[ $allmuted = "yes" ] && echo -e "\uf131" || echo -e "\uf130"
-
-	sleep $1
-done
+printstatus "source"
+pactl subscribe | {
+	while read evt; do printstatus "$evt" ; done
+}

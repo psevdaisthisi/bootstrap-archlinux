@@ -177,7 +177,7 @@ set smartcase
 set splitbelow
 set splitright
 set title
-autocmd BufEnter * let &titlestring='nvim ' . expand('%:t')
+autocmd BufEnter * let &titlestring=expand('%:t')
 
 if has('unix') && exists('g:GuiLoaded')
 	colorscheme slate

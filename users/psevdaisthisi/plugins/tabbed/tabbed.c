@@ -332,7 +332,8 @@ drawbar(void)
 	char *name = NULL;
 	char tabtitle[256];
 
-	nbh = barvisibility ? vbh : 0;
+	// nbh = barvisibility ? vbh : 0;
+	nbh = nclients > 1 ? vbh : 0;
 	if (nbh != bh) {
 		bh = nbh;
 		for (c = 0; c < nclients; c++)

@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 
-# Convert arguments passed to this script into bash variables.
-# Taken from https://unix.stackexchange.com/a/388038
-while [ $# -gt 0 ]; do
-	if [[ $1 == *"--"* ]]; then
-		v="${1/--/}"
-		declare "$v"="$2"
-	fi
-	shift
+_dir=""
+while [[ $# -gt 0 ]]
+do
+	case "$1" in
+		-d|--dir)
+			_dir="$2"
+			shift
+			shift
+			;;
+	esac
 done
 
-[ -v dir ] && [ -d "$dir" ] || dir='.'
+[ ! -d "$_dir" ] && _dir='.'
 
-cd "$dir" &> /dev/null
-if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) ]
-then
+cd "$_dir" &> /dev/null
+if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) ]; then
 	stat=$(git status --branch --short)
 	branch=$(git branch | grep '^\*' | sed 's/\* //')
 	num_staged=$(echo "$stat" | grep '^A\|^D\|^M\|^R' | wc -l)

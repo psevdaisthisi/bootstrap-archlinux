@@ -147,5 +147,6 @@ done
 cd "$script_path"
 
 nvim +PlugInstall +qa
+nvim +CocUpdateSync +qa
 
 popd > /dev/null

@@ -16,7 +16,7 @@ while pgrep -u $UID -x picom > /dev/null; do sleep 1;done &&
 
 while pgrep -u $UID -x redshift > /dev/null; do sleep 1;done && redshift &
 
-SXHKD_SHELL=/usr/bin/bash sxhkd &
+SXHKD_SHELL=/usr/bin/bash sxhkd -m 1 &
 
 db=$(xrdb -query)
 colorbg=$(echo "$db" | grep '^\*\.background:' | awk '{print $2}')

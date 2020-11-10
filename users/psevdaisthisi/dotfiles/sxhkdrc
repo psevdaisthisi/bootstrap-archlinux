@@ -90,7 +90,7 @@ super + comma
 
 # --- system ---
 super + Return
-	WINIT_X11_SCALE_FACTOR=1 alacritty --dimensions 120 45 --command tmux
+	WINIT_X11_SCALE_FACTOR=1 alacritty --dimensions 220 50 --command tmux
 	# tabbed -c -p -1 -n "Alacritty" -g 1280x800 -r 2 alacritty --embed '' --command tmux
 super + shift + Return
 	WINIT_X11_SCALE_FACTOR=1 alacritty --command tmux

@@ -90,9 +90,11 @@ super + comma
 
 # --- system ---
 super + Return
-	tabbed -c -p -1 -n "Alacritty" -g 1280x800 -r 2 alacritty --embed '' --command tmux
+	WINIT_X11_SCALE_FACTOR=1 alacritty --dimensions 120 45 --command tmux
+	# tabbed -c -p -1 -n "Alacritty" -g 1280x800 -r 2 alacritty --embed '' --command tmux
 super + shift + Return
-	tabbed -c -p -1 -n "Alacritty" -r 2 alacritty --embed '' --command tmux
+	WINIT_X11_SCALE_FACTOR=1 alacritty --command tmux
+	#tabbed -c -p -1 -n "Alacritty" -r 2 alacritty --embed '' --command tmux
 super + shift + n
 	/usr/bin/firefox -private-window
 

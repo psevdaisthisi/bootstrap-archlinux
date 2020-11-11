@@ -138,13 +138,24 @@ do
 
 	[ "$_name" = "spotify" ] &&
 	curl --connect-timeout 13 --retry 5 --retry-delay 2 \
-		-sS https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
+		-L https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 
 	makepkg -sirc --noconfirm --needed
 
 	cd ..
 done
 cd "$script_path"
+
+printinfo "Installing MongoDB Tools v100.2.0..."
+curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+	-L https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2004-x86_64-100.2.0.tgz \
+	-o mongodb-tools.tgz &&
+mkdir -p mongodb-tools &&
+sudo tar fvxz mongodb-tools.tgz -C mongodb-tools/ --wildcards  '*/bin/*' --strip-components=1 &&
+sudo mv mongodb-tools/bin/* /usr/local/bin &&
+sudo rm -rf mongodb-tools* &&
+printsucc "Installing MongoDB Tools v100.2.0... [DONE]" ||
+printerr "Installing MongoDB Tools v100.2.0... [FAILED]"
 
 nvim +PlugInstall +qa
 nvim +CocUpdateSync +qa

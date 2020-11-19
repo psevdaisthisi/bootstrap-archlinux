@@ -115,7 +115,7 @@ pip install --user wheel compiledb conan flashfocus grip pynvim pywal
 
 cd "$NVM_DIR";
 git clone https://github.com/nvm-sh/nvm.git .
-git checkout "v0.36.0"
+git checkout "v0.37.0"
 cd "$script_path"
 
 . "$HOME/.bashrc"

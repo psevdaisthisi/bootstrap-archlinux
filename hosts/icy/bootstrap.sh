@@ -158,7 +158,7 @@ _pkgs_sys=(atk avahi bash bluez brightnessctl coreutils dhcpcd efibootmgr
            sudo wireguard-lts xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
-             htop inotify-tools iotop libva-utils lshw lsof man neovim nmap nnn
+             hey htop inotify-tools iotop libva-utils lshw lsof man neovim nmap nnn
              openbsd-netcat openssh os-prober p7zip pbzip2 pigz powertop progress
              ripgrep samba svt-av1 svt-hevc svt-vp9 thermald tigervnc time tmux
              tree turbostat unzip usbutils usleep vdpauinfo which xdg-user-dirs)

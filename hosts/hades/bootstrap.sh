@@ -185,8 +185,8 @@ _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags cuda
            strace tokei vulkan-extra-layers vulkan-extra-tools vulkan-headers
            vulkan-icd-loader vulkan-mesa-layers vulkan-tools
            vulkan-validation-layers wabt zig)
-_pkgs_x11=(bspwm dunst picom sxhkd xclip xorg-server xorg-xinit xorg-xinput
-           xorg-xprop xorg-xrandr xorg-xset xorg-xsetroot)
+_pkgs_x11=(bspwm dunst galculator picom sxhkd xclip xorg-server xorg-xinit
+           xorg-xinput xorg-xprop xorg-xrandr xorg-xset xorg-xsetroot)
 _pkgs_fonts=(noto-fonts noto-fonts-emoji terminus-font ttf-font-awesome
              ttf-jetbrains-mono)
 _pkgs_apps=(alacritty arandr feh firefox libreoffice-still maim meld mesa-demos

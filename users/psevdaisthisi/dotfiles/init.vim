@@ -351,10 +351,10 @@ endif
 " }}} Functions, key mappings and other utils
 
 " Automatically load NERDTree and FZF History when starting Neovim.
-let vimenter_blacklist = ['gitcommit']
-autocmd VimEnter * if index(vimenter_blacklist, &ft) < 0 && expand('%:t') == '' |
-	\ NERDTreeToggle | :exe "normal \<C-w>l" |
-	\ :call FilterHistory(getcwd()) | History
+" let vimenter_blacklist = ['gitcommit']
+" autocmd VimEnter * if index(vimenter_blacklist, &ft) < 0 && expand('%:t') == '' |
+" 	\ NERDTreeToggle | :exe "normal \<C-w>l" |
+" 	\ :call FilterHistory(getcwd()) | History
 
 " Automatically exit if the last window is NERDTree
 " Take from https://github.com/preservim/nerdtree#how-can-i-close-vim-if-the-only-window-left-open-is-a-nerdtree

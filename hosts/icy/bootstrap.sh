@@ -124,7 +124,7 @@ cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 cp sysfiles/crypttab "$_rootmnt"/etc/crypttab
 
-_initramfs_modules="zstd"
+_initramfs_modules="amdgpu zstd"
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
 sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf

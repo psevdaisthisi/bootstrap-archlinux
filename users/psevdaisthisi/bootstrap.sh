@@ -41,7 +41,10 @@ printinfo "+ --------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 _vol1="$HOME/vol1"
 [ -d "$HOME/vol2" ] && _vol2="$HOME/vol2" || _vol2="${_vol1}"
+mkdir "$HOME/.gnupg"
+chmod u=rwx,g=,o= "$HOME/.gnupg"
 mkdir "$HOME/.ssh"
+chmod u=rwx,g=,o= "$HOME/.ssh"
 mkdir -p "$HOME/.config/fontconfig"
 mkdir -p "$HOME/.local/bin/go"
 mkdir -p "$HOME/.local/share/xorg"
@@ -96,12 +99,12 @@ printinfo "+ ------------------- +"
 printinfo "| Installing dotfiles |"
 printinfo "+ ------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
-. install-dotfiles.sh --host-dir ".." --fix-permissions --install-tabbed
+. install-dotfiles.sh --host-dir ".." --fix-permissions
 
 printinfo "\n"
-printinfo "+ ------------------------ +"
-printinfo "| Installing user software |"
-printinfo "+ ------------------------ +"
+printinfo "+ -------------------------------------------- +"
+printinfo "| Installing groups, Docker and monospace font |"
+printinfo "+ -------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 sudo usermod -aG video ${_user}
 sudo usermod -aG docker ${_user}
@@ -113,8 +116,18 @@ sudo curl --connect-timeout 13 --retry 5 --retry-delay 2 \
 unzip JetBrainsMono.zip -d "$HOME/.local/share/fonts/"
 fc-cache --force
 
+printinfo "\n"
+printinfo "+ ----------------------- +"
+printinfo "| Installing pip packages |"
+printinfo "+ ----------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 pip install --user wheel compiledb conan flashfocus grip pynvim pywal
 
+printinfo "\n"
+printinfo "+ ------------------------------ +"
+printinfo "| Installing NVM, NodeJS and NPM |"
+printinfo "+ ------------------------------ +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cd "$NVM_DIR";
 git clone https://github.com/nvm-sh/nvm.git .
 git checkout "v0.37.0"
@@ -126,6 +139,11 @@ nvm ls-remote --lts=erbium
 nvm install --lts=erbium
 nvm use default erbium
 
+printinfo "\n"
+printinfo "+ ----------------------- +"
+printinfo "| Installing AUR packages |"
+printinfo "+ ----------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cd "$AUR"
 _aur_pkgs=(bit@master brave-bin@master git-delta-bin@master grv@master
            mongodb-compass@master mprime-bin@master polybar@master
@@ -148,21 +166,26 @@ do
 done
 cd "$script_path"
 
-printinfo "Installing MongoDB Tools v100.2.0..."
+printinfo "\n"
+printinfo "+ ------------------------ +"
+printinfo "| Installing MongoDB Tools |"
+printinfo "+ ------------------------ +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 curl --connect-timeout 13 --retry 5 --retry-delay 2 \
-	-L https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2004-x86_64-100.2.0.tgz \
+	-L 'https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2004-x86_64-100.2.0.tgz' \
 	-o mongodb-tools.tgz &&
 mkdir -p mongodb-tools &&
 sudo tar fvxz mongodb-tools.tgz -C mongodb-tools/ --wildcards  '*/bin/*' --strip-components=1 &&
 sudo mv mongodb-tools/bin/* /usr/local/bin &&
-sudo rm -rf mongodb-tools* &&
-printsucc "Installing MongoDB Tools v100.2.0... [DONE]" ||
-printerr "Installing MongoDB Tools v100.2.0... [FAILED]"
+sudo rm -rf mongodb-tools*
 
-printinfo "Installing Neovim plugins..."
+printinfo "\n"
+printinfo "+ --------------------------------- +"
+printinfo "| Installing Neovim and Coc plugins |"
+printinfo "+ --------------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 nvim +PlugInstall +qa
-sleep 1
-printinfo "Installing CoC plugins..."
+nvim +CocUpdateSync +qa
 nvim +CocUpdateSync +qa
 
 popd > /dev/null

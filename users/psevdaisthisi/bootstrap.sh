@@ -180,12 +180,10 @@ sudo mv mongodb-tools/bin/* /usr/local/bin &&
 sudo rm -rf mongodb-tools*
 
 printinfo "\n"
-printinfo "+ --------------------------------- +"
-printinfo "| Installing Neovim and Coc plugins |"
-printinfo "+ --------------------------------- +"
+printinfo "+ ----------------- +"
+printinfo "| Installing Neovim |"
+printinfo "+ ----------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 nvim +PlugInstall +qa
-nvim +CocUpdateSync +qa
-nvim +CocUpdateSync +qa
 
 popd > /dev/null

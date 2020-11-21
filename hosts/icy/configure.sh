@@ -131,7 +131,7 @@ systemctl enable sshd.service
 systemctl enable thermald.service
 
 cp /usr/share/doc/avahi/ssh.service /etc/avahi/services/
-sed -i 's/hosts:.*/hosts: files mymachines myhostname mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns/' /etc/nsswitch.conf
+sed -i 's/hosts:.*/hosts: files mymachines myhostname mdns4_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns/' /etc/nsswitch.conf
 
 cp sysfiles/bluetooth.conf /etc/bluetooth/main.conf
 mkdir -p /etc/iwd && cp sysfiles/iwd.conf /etc/iwd/main.conf

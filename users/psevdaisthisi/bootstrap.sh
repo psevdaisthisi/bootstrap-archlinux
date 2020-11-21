@@ -48,12 +48,11 @@ mkdir -p "$HOME/.local/share/xorg"
 mkdir -p "$HOME/.local/share/fonts"
 mkdir -p "$HOME/mount"
 mkdir -p "${_vol1}/"{aur,sync}
-mkdir -p "${_vol2}/"{code,junk}
+mkdir -p "${_vol2}/"{junk,proj}
 mkdir -p "${_vol2}/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
 
 { echo "export HOST=\"${_host}\"";
   echo "export AUR=\"${_vol1}/aur\"";
-  echo "export CODE=\"${_vol2}/code\"";
   echo "export JUNK=\"${_vol2}/junk\"";
   echo "export MOUNT=\"$HOME/mount\"";
   echo "export SYNC=\"${_vol1}/sync\"";
@@ -67,11 +66,12 @@ mkdir -p "${_vol2}/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
   echo "export GOPATH=\"${_vol2}/.cache/go/lib\"";
   echo "export IPFS_PATH=\"${_vol2}/.cache/ipfs\"";
   echo "export NPM_CONFIG_CACHE=\"${_vol2}/.cache/npm\"";
-  echo "export NVM_DIR=\"${_vol2}/.cache/nvm\""; } > "$HOME/.env.sh"
+  echo "export NVM_DIR=\"${_vol2}/.cache/nvm\"";
+  echo "export PROJ=\"${_vol2}/proj\"";
+} > "$HOME/.env.sh"
 
 { echo "set --export HOST \"${_host}\"";
   echo "set --export AUR \"${_vol1}/aur\"";
-  echo "set --export CODE \"${_vol2}/code\"";
   echo "set --export JUNK \"${_vol2}/junk\"";
   echo "set --export MOUNT \"$HOME/mount\"";
   echo "set --export SYNC \"${_vol1}/sync\"";
@@ -85,7 +85,9 @@ mkdir -p "${_vol2}/.cache/"{docker,go/{build,lib,mod},ipfs,npm,nvm,spotify}
   echo "set --export GOPATH \"${_vol2}/.cache/go/lib\"";
   echo "set --export IPFS_PATH \"${_vol2}/.cache/ipfs\"";
   echo "set --export NPM_CONFIG_CACHE \"${_vol2}/.cache/npm\"";
-  echo "set --export NVM_DIR \"${_vol2}/.cache/nvm\""; } > "$HOME/.env.fish"
+  echo "set --export NVM_DIR \"${_vol2}/.cache/nvm\"";
+  echo "set --export PROJ \"${_vol2}/proj\"";
+} > "$HOME/.env.fish"
 
 . "$HOME/.env.sh"
 
@@ -157,7 +159,10 @@ sudo rm -rf mongodb-tools* &&
 printsucc "Installing MongoDB Tools v100.2.0... [DONE]" ||
 printerr "Installing MongoDB Tools v100.2.0... [FAILED]"
 
+printinfo "Installing Neovim plugins..."
 nvim +PlugInstall +qa
+sleep 1
+printinfo "Installing CoC plugins..."
 nvim +CocUpdateSync +qa
 
 popd > /dev/null

@@ -171,10 +171,10 @@ printinfo "+ ------------------------ +"
 printinfo "| Installing MongoDB Tools |"
 printinfo "+ ------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
-curl --connect-timeout 13 --retry 5 --retry-delay 2 \
+sudo curl --connect-timeout 13 --retry 5 --retry-delay 2 \
 	-L 'https://fastdl.mongodb.org/tools/db/mongodb-database-tools-ubuntu2004-x86_64-100.2.0.tgz' \
 	-o mongodb-tools.tgz &&
-mkdir -p mongodb-tools &&
+sudo mkdir -p mongodb-tools &&
 sudo tar fvxz mongodb-tools.tgz -C mongodb-tools/ --wildcards  '*/bin/*' --strip-components=1 &&
 sudo mv mongodb-tools/bin/* /usr/local/bin &&
 sudo rm -rf mongodb-tools*

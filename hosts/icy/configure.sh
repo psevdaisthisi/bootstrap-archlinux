@@ -109,7 +109,7 @@ _dns_ipv4="1.1.1.1 1.0.0.1"
 _dns_ipv6="2606:4700:4700::1111 2606:4700:4700::1001"
 _dns="static domain_name_servers=${_dns_ipv4} ${_dns_ipv6}"
 { echo "";
-  echo "interface eno1";
+  echo "interface enp1s0f0";
   echo "${_dns}";
   echo "";
   echo "interface wlan0";

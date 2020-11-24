@@ -137,7 +137,7 @@ printinfo "+ --------------------- +"
 pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 
-_initramfs_modules="i915 rfkill"
+_initramfs_modules="i915 rfkill zstd"
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
 sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf
@@ -209,13 +209,22 @@ printinfo "\n"
 printinfo "+ ---------------------------- +"
 printinfo "| Jumping into the chroot jail |"
 printinfo "+ ---------------------------- +"
+[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkdir -p "$_rootmnt"/tmp/chroot
 cp sysfiles/resolv.conf "$_rootmnt"/etc/resolv.conf
 cp -r {.,../../misc.sh,../../users/${_user}} "$_rootmnt"/tmp/chroot
-mount -t proc /proc "$_rootmnt"/proc/
-mount --rbind /sys "$_rootmnt"/sys/
-mount --rbind /dev "$_rootmnt"/dev/
-chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh --host ${_host} --user ${_user} ${_stepping}
+
+mount proc "$_rootmnt"/proc/ -t proc -o nosuid,noexec,nodev
+mount sys "$_rootmnt"/sys/ -t sysfs -o nosuid,noexec,nodev,ro
+[ -d "${_rootmnt}/sys/firmware/efi/efivars" ] &&
+	mount efivarfs "${_rootmnt}/sys/firmware/efi/efivars" -t efivarfs -o nosuid,noexec,nodev
+mount udev "$_rootmnt/dev/" -t devtmpfs -o mode=0755,nosuid
+mount devpts "$_rootmnt/dev/pts" -t devpts -o mode=0620,gid=5,nosuid,noexec
+mount shm "$_rootmnt/dev/shm" -t tmpfs -o mode=1777,nosuid,nodev
+mount /run "$_rootmnt/run" --bind
+
+chroot "$_rootmnt" /usr/bin/bash /tmp/chroot/configure.sh \
+	--host ${_host} --user ${_user} ${_stepping}
 
 printinfo "\n"
 printinfo "+ --------------------- +"
@@ -227,9 +236,13 @@ umount "${_rootmnt}/home/${_user}/vol1"
 umount "$_rootmnt"/boot/efi
 umount "$_rootmnt"/boot
 sync
-umount "$_rootmnt"/proc/
-umount "$_rootmnt"/sys/
-umount "$_rootmnt"/dev/
+umount "$_rootmnt"/run
+umount "$_rootmnt"/dev/shm
+umount "$_rootmnt"/dev/pts
+umount "$_rootmnt"/dev
+umount "$_rootmnt"/sys/firmware/efi/efivars
+umount "$_rootmnt"/sys
+umount "$_rootmnt"/proc
 umount "$_rootmnt"
 cryptsetup close root
 

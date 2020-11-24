@@ -176,11 +176,11 @@ _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              svt-hevc svt-vp9 thermald tigervnc time tmux tree turbostat unzip
              usbutils usleep which xdg-user-dirs)
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags
-           diffutils docker docker-compose edk2-ovmf gcc gcc8 gcc9 gdb git go
-           go-tools intel-media-sdk lldb ltrace m4 make man-pages ninja
-           openssl-1.0 perf pgadmin4 pkgconf postgresql python python-pip qemu
-           qemu-arch-extra spirv-llvm-translator spirv-headers spirv-tools
-           strace tokei vulkan-extra-layers vulkan-extra-tools vulkan-headers
+           diffutils docker docker-compose edk2-ovmf gcc gdb git go go-tools
+           intel-media-sdk lldb ltrace m4 make man-pages ninja openssl-1.0 perf
+           pgadmin4 pkgconf postgresql python python-pip qemu qemu-arch-extra
+           spirv-llvm-translator spirv-headers spirv-tools strace tokei
+           vulkan-extra-layers vulkan-extra-tools vulkan-headers
            vulkan-icd-loader vulkan-mesa-layers vulkan-tools
            vulkan-validation-layers wabt zig)
 _pkgs_x11=(bspwm dunst galculator picom sxhkd xclip xorg-server xorg-xinit

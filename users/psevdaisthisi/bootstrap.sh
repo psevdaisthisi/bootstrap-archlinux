@@ -145,9 +145,10 @@ printinfo "| Installing AUR packages |"
 printinfo "+ ----------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cd "$AUR"
-_aur_pkgs=(bit@master brave-bin@master git-delta-bin@master grv@master
-           mongodb-compass@master mprime-bin@master polybar@master
-           postman-bin@master rslsync@master spotify@master teams@master)
+_aur_pkgs=(bit@master brave-bin@master gcc8@master gcc9@master
+           git-delta-bin@master grv@master mongodb-compass@master
+           mprime-bin@master polybar@master postman-bin@master
+           rslsync@master spotify@master teams@master)
 for pkg in ${_aur_pkgs[*]}
 do
 	_name=${pkg%%@*}

@@ -87,7 +87,7 @@ clear-cache () {
 		echo "System cache was cleared."
 }
 
-clear-shada () {
+clear-nvim () {
 	rm -f ~/.local/share/nvim/shada/*.shada
 }
 

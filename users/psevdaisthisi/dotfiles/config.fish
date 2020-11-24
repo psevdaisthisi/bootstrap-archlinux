@@ -110,7 +110,7 @@ function clear-cache --description "Clear PageCache"
 		echo "System cache was cleared."
 end
 
-function clear-shada --description "Clear neovim persistent history"
+function clear-nvim --description "Clear neovim history"
 	rm -f ~/.local/share/nvim/shada/*.shada
 end
 

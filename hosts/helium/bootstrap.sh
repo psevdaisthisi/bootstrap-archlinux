@@ -170,7 +170,7 @@ _pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
            xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
-             hey htop inotify-tools intel-gpu-tools intel-undervolt iotop
+             hey htop inotify-tools intel-gpu-tools intel-undervolt iotop jq
              libva-utils lshw lsof man neovim nmap nnn openbsd-netcat openssh
              os-prober p7zip pbzip2 pigz powertop progress ripgrep samba svt-av1
              svt-hevc svt-vp9 thermald tigervnc time tmux tree turbostat unzip

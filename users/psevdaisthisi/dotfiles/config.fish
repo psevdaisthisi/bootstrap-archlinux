@@ -25,7 +25,7 @@ set -g fish_color_command blue --bold
 # 	--background (cat ~/.cache/wal/colors | sed -n 3p)
 # set -g fish_color_nnn (cat ~/.cache/wal/colors | sed -n 1p) \
 # 	--background (cat ~/.cache/wal/colors | sed -n 5p)
-set -g fish_color_cwd (cat ~/.cache/wal/colors | sed -n 3p) --underline
+set -g fish_color_cwd (cat ~/.cache/wal/colors | sed -n 3p)
 set -g fish_color_nnn (cat ~/.cache/wal/colors | sed -n 5p)
 set -g fish_color_error brred --bold
 

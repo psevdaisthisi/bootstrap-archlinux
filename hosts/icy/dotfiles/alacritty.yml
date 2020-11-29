@@ -6,12 +6,41 @@ scrolling:
   multiplier: 3
 
 font:
+  # @Note: for JetBrains Mono
+  # normal:
+  #   family: monospace
+  # size: 10.0
+  # offset:
+  #   x: 0
+  #   y: 1
+
+  # @Note: for Unifont
+  # normal:
+  #   family: terminal
+  # size: 12.0
+  # glyph_offset:
+  #   x: 0
+  #   y: 2
+  # offset:
+  #   x: 0
+  #   y: 1
+  # bold:
+  #   family: terminal
+  #   style: Regular
+
+  # @Note: for Terminus TTF
   normal:
-    family: monospace
-  size: 10.0
-  offset:
+    family: terminal
+  size: 10.5
+  glyph_offset:
     x: 0
     y: 1
+  offset:
+    x: 0
+    y: 3
+  bold:
+    family: terminal
+    style: Regular
 
 window:
   decorations: none

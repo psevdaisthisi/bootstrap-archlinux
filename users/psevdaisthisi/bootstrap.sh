@@ -144,11 +144,16 @@ printinfo "+ ----------------------- +"
 printinfo "| Installing AUR packages |"
 printinfo "+ ----------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
+# 95D2E9AB8740D8046387FD151A09227B1F435A33: Unifoundry.com (Paul Hardy)
+# 8FD3D9A8D3800305A9FFF259D1742AD60D811D58: Spotify
+gpg --keyserver pgp.mit.edu --receive-keys 95D2E9AB8740D8046387FD151A09227B1F435A33
+gpg --keyserver keyserver.ubuntu.com --receive-keys 8FD3D9A8D3800305A9FFF259D1742AD60D811D58
 cd "$AUR"
 _aur_pkgs=(bit@master brave-bin@master gcc8@master gcc9@master
            git-delta-bin@master grv@master mongodb-compass@master
            mprime-bin@master polybar@master postman-bin@master
-           rslsync@master spotify@master teams@master)
+           rslsync@master spotify@master teams@master terminus-font-ttf@master
+           ttf-unifont@master)
 for pkg in ${_aur_pkgs[*]}
 do
 	_name=${pkg%%@*}
@@ -156,10 +161,6 @@ do
 
 	git clone https://aur.archlinux.org/"$_name".git && cd "$_name"
 	git checkout "$_tag"
-
-	[ "$_name" = "spotify" ] &&
-	curl --connect-timeout 13 --retry 5 --retry-delay 2 \
-		-L https://download.spotify.com/debian/pubkey_0D811D58.gpg | gpg --import -
 
 	makepkg -sirc --noconfirm --needed
 

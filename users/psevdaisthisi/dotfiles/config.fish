@@ -21,20 +21,27 @@ set -g __fish_git_prompt_color_invalidstate red
 set -g __fish_git_prompt_color_untrackedfiles $fish_color_normal
 set -g __fish_git_prompt_color_cleanstate green
 set -g fish_color_command blue --bold
-set -g fish_color_cwd (cat ~/.cache/wal/colors | sed -n 1p) \
-	--background (cat ~/.cache/wal/colors | sed -n 3p)
-set -g fish_color_nnn (cat ~/.cache/wal/colors | sed -n 1p) \
-	--background (cat ~/.cache/wal/colors | sed -n 5p)
+# set -g fish_color_cwd (cat ~/.cache/wal/colors | sed -n 1p) \
+# 	--background (cat ~/.cache/wal/colors | sed -n 3p)
+# set -g fish_color_nnn (cat ~/.cache/wal/colors | sed -n 1p) \
+# 	--background (cat ~/.cache/wal/colors | sed -n 5p)
+set -g fish_color_cwd (cat ~/.cache/wal/colors | sed -n 3p) --underline
+set -g fish_color_nnn (cat ~/.cache/wal/colors | sed -n 5p)
 set -g fish_color_error brred --bold
 
 function fish_prompt
 	if test "$ENABLE_GIT_PROMPT" = 1
-		printf '%s %s %s%s%s%s ➤  ' (set_color $fish_color_cwd) (prompt_pwd) \
-			(set_color $fish_color_normal) (__fish_git_prompt && echo ' ' || echo ' ') \
+		#printf '%s %s %s%s%s%s ➤  ' (set_color $fish_color_cwd) (prompt_pwd) \
+		#printf '%s %s %s%s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) \
+		printf '%s%s%s%s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) (set_color $fish_color_normal)\
+			(__fish_git_prompt && echo ' ' || echo ' ') \
 			(set_color $fish_color_nnn) ([ -n "$NNNLVL" ] && echo " $NNNLVL ") (set_color $fish_color_normal)
 	else
-		printf '%s %s %s%s%s ➤  ' (set_color $fish_color_cwd) (prompt_pwd) \
-			(set_color $fish_color_nnn) ([ -n "$NNNLVL" ] && echo " $NNNLVL ") (set_color $fish_color_normal)
+		#printf '%s %s%s %s%s%s ➤  ' (set_color $fish_color_cwd) (prompt_pwd) \
+		#printf '%s %s%s %s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) \
+		printf '%s%s%s%s%s%s > ' (set_color $fish_color_cwd) (prompt_pwd) (set_color $fish_color_normal)\
+			(set_color $fish_color_nnn) ([ -n "$NNNLVL" ] && echo " $NNNLVL") (set_color $fish_color_normal)
+			# (set_color $fish_color_nnn) ([ -n "$NNNLVL" ] && echo " $NNNLVL ") (set_color $fish_color_normal)
 	end
 end
 

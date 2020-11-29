@@ -1,4 +1,5 @@
-PS1="\[$(tput setaf 5)\]\A\[$(tput sgr0)\] \w$([ -n "$NNNLVL" ] && echo " nnn:$NNNLVL") \[$(tput setaf 6)\]➤ \[$(tput sgr0)\] "
+#PS1="\[$(tput setaf 5)\]\A\[$(tput sgr0)\] \w$([ -n "$NNNLVL" ] && echo " nnn:$NNNLVL") \[$(tput setaf 6)\]➤ \[$(tput sgr0)\] "
+PS1="\[$(tput setaf 5)\]\A\[$(tput sgr0)\] \w$([ -n "$NNNLVL" ] && echo " nnn:$NNNLVL") \[$(tput setaf 6)\]>\[$(tput sgr0)\] "
 
 . "$HOME/.env.sh"
 . "$HOME/.bashrc.host"

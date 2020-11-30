@@ -63,7 +63,7 @@ function fish_mode_prompt
       set_color black
       echo ' C '
 			set_color normal
-			# echo ' '
+			echo ' '
     case insert
       echo ''
     case replace_one
@@ -71,19 +71,19 @@ function fish_mode_prompt
       set_color black
       echo ' R '
 			set_color normal
-			# echo ' '
+			echo ' '
     case visual
       set_color --background yellow
       set_color black
       echo ' S '
 			set_color normal
-			# echo ' '
+			echo ' '
     case '*'
       set_color --background blue
       set_color black
       echo ' ? '
 			set_color normal
-			# echo ' '
+			echo ' '
   end
 end
 

@@ -176,9 +176,9 @@ printinfo "+ ------------------------------------ +"
 sudo bash install-mongodb.sh
 
 printinfo "\n"
-printinfo "+ ----------------- +"
-printinfo "| Installing Neovim |"
-printinfo "+ ----------------- +"
+printinfo "+ ------------------------ +"
+printinfo "| Installing Neovim pugins |"
+printinfo "+ ------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 nvim +PlugInstall +qa
 

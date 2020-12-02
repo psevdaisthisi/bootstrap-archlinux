@@ -345,14 +345,16 @@ random-wallpaper () {
 
 screenshot () {
 	if [ -n "$DISPLAY" ]; then
-		local filename=$(echo screenshot-$(date '+%Y.%m.%d-%H.%M.%S'))
+		local filename=$(echo $(date '+%Y.%m.%d-%H.%M.%S'))
 
-		maim --hidecursor --nokeyboard --quality 10 --select "$JUNK/${filename}.png" &&
-		clipit "$JUNK/${filename}.png"
+		mkdir -p "$JUNK/screenshots/"
+		local path="$JUNK/screenshots/${filename}.png"
+		maim --hidecursor --nokeyboard --quality 10 --select "$path" &&
+		clipit "$path"
 
-		[ -f "$JUNK/$filename".png ] &&
-		echo Image written to "$JUNK/${filename}.png" &&
-		notify-send 'Screenshot' "File available at '$JUNK/${filename}.png'"
+		[ -f "$path" ] &&
+		echo Image written to "$path" &&
+		notify-send 'Screenshot' "File available at '$path'"
 	fi
 }
 

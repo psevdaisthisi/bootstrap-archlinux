@@ -130,7 +130,7 @@ printinfo "+ ------------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 cd "$NVM_DIR";
 git clone https://github.com/nvm-sh/nvm.git .
-git checkout "v0.37.0"
+git checkout "v0.37.2"
 cd "$script_path"
 
 . "$HOME/.bashrc"

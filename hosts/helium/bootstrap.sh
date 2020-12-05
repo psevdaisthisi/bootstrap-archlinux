@@ -71,39 +71,63 @@ printinfo "+ --------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 parted /dev/sda mklabel gpt && sleep 1
 
-# All space as a data partition (vol2)
-parted /dev/sda mkpart primary "1MiB" "100%" && sleep 1
+_starts_at=1
+_ends_at=$((1 + 8 * 1024)) # 8GiB swap partition
+parted /dev/sda mkpart primary "${_starts_at}MiB" "${_ends_at}MiB" && sleep 1
+
+_starts_at=${_ends_at} # All remaining space as data partition (vol1)
+parted /dev/sda mkpart primary "${_starts_at}MiB" "100%" && sleep 1
 
 printinfo "\n"
-printinfo "+ --------------------------------------------------------------- +"
-printinfo "| Formatting /dev/nvme0n1 and setting up LUKS encrypted partition |"
-printinfo "+ --------------------------------------------------------------- +"
+printinfo "+ ------------------------------------------------- +"
+printinfo "| Formatting volumes and setting up LUKS encryption |"
+printinfo "+ ------------------------------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.fat -F32 /dev/nvme0n1p1 && sleep 1
 mkfs.f2fs -f /dev/nvme0n1p2 && sleep 1
+mkswap /dev/sda1 && sleep 1
 
 luks_format_success="no"
 while [ "$luks_format_success" = "no" ]; do
-	cryptsetup --verbose luksFormat /dev/nvme0n1p3
+	printwarn 'Waiting for the USB decryption key ...'
+	while [ ! -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ]; do
+		sleep 1
+	done
+	printinfo 'USB decryption key found.'
+
+	printinfo 'Extracting encrypt key ...' &&
+	dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/root.key bs=4096 count=1 &&
+	printinfo 'Encrypting root...' &&
+	cryptsetup --verbose luksFormat /dev/nvme0n1p3 /tmp/root.key --type luks2 &&
+	printinfo 'Generating encryption key for data1 ...' &&
+	dd if=/dev/urandom of=/tmp/data1.key bs=4096 count=1 &&
+	printinfo 'Encrypting data1...' &&
+	cryptsetup --verbose luksFormat /dev/nvme0n1p4 /tmp/data1.key --type luks2 &&
+	printinfo 'Generating encryption key for data2 ...' &&
+	dd if=/dev/urandom of=/tmp/data2.key bs=4096 count=1 &&
+	printinfo 'Encrypting data2...' &&
+	cryptsetup --verbose luksFormat /dev/sda2 /tmp/data2.key --type luks2
+
 	[ $? -eq 0 ] && luks_format_success="yes"
 done
 
-luks_mount_success="no"
-while [ "$luks_mount_success" = "no" ]; do
-	cryptsetup open /dev/nvme0n1p3 root
-	[ $? -eq 0 ] && luks_mount_success="yes"
+luks_open_success="no"
+while [ "$luks_open_success" = "no" ]; do
+	printinfo 'Opening encrypted devices ...' &&
+	cryptsetup open /dev/nvme0n1p4 data1 --key-file /tmp/data1.key --allow-discards &&
+	cryptsetup open /dev/sda2 data2 --key-file /tmp/data2.key --allow-discards &&
+	printinfo 'Enter fallback password for root device ...' &&
+	cryptsetup luksAddKey /dev/nvme0n1p3 --key-file /tmp/root.key &&
+	cryptsetup open /dev/nvme0n1p3 root --key-file /tmp/root.key --allow-discards
+
+	[ $? -eq 0 ] && luks_open_success="yes"
 done
 sleep 1
+rm -f /tmp/root.key
 
 mkfs.f2fs -O encrypt -f /dev/mapper/root && sleep 1
-mkfs.f2fs -O encrypt -f /dev/nvme0n1p4 && sleep 1
-
-printinfo "\n"
-printinfo "+ ------------------- +"
-printinfo "| Formatting /dev/sda |"
-printinfo "+ ------------------- +"
-[ "$_stepping" ] && { yesno "Continue?" || exit 1; }
-mkfs.f2fs -O encrypt -f /dev/sda1 && sleep 1
+mkfs.f2fs -O encrypt -f /dev/mapper/data1 && sleep 1
+mkfs.f2fs -O encrypt -f /dev/mapper/data2 && sleep 1
 
 printinfo "\n"
 printinfo "+ ------------------- +"
@@ -119,8 +143,8 @@ mount /dev/nvme0n1p1 "$_rootmnt"/boot/efi
 
 mkdir -p "$_rootmnt"/home/${_user}/vol1
 mkdir -p "$_rootmnt"/home/${_user}/vol2
-mount /dev/nvme0n1p4 "$_rootmnt"/home/${_user}/vol1
-mount /dev/sda1 "$_rootmnt"/home/${_user}/vol2
+mount /dev/mapper/data1 "$_rootmnt"/home/${_user}/vol1
+mount /dev/mapper/data2 "$_rootmnt"/home/${_user}/vol2
 
 printinfo "\n"
 printinfo "+ --------------------- +"
@@ -136,11 +160,20 @@ printinfo "+ --------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
+cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
+cp sysfiles/crypttab "$_rootmnt"/etc/crypttab
+cp sysfiles/decrypt.install "$_rootmnt"/etc/initcpio/install/decrypt
+cp sysfiles/decrypt.hook "$_rootmnt"/etc/initcpio/hooks/decrypt
+mkdir -p "$_rootmnt"/etc/cryptsetup-keys.d/
+mv /tmp/data1.key "$_rootmnt"/etc/cryptsetup-keys.d/
+mv /tmp/data2.key "$_rootmnt"/etc/cryptsetup-keys.d/
+chmod u=r,g=,o= "$_rootmnt"/etc/cryptsetup-keys.d/data?.key
 
-_initramfs_modules="i915 rfkill zstd"
-_initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
-sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
-sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf
+_initramfs_modules="i915 loop rfkill zstd"
+_initramfs_hooks="base autodetect udev keyboard keymap consolefont modconf block decrypt filesystems"
+sed -i -r "s|^FILES=\(\)|FILES=($_initramfs_files)|" "$_rootmnt"/etc/mkinitcpio.conf
+sed -i -r "s|^MODULES=\(\)|MODULES=($_initramfs_modules)|" "$_rootmnt"/etc/mkinitcpio.conf
+sed -i -r "s|^HOOKS=(.*)|HOOKS=($_initramfs_hooks)|" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r '/#COMPRESSION="lz4"/s/^#*//g' "$_rootmnt"/etc/mkinitcpio.conf
 
 # The keymap needs to be configured earlier so initramfs uses the correct layout

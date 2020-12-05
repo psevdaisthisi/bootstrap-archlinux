@@ -1,0 +1,3 @@
+data  /dev/nvme0n1p4  /etc/cryptsetup-keys.d/data1.key  luks,discard,keyfile-size=4096
+swap  /dev/sda1  /dev/urandom  swap,discard,cipher=aes-cbc-essiv:sha256,size=256
+data  /dev/sda2  /etc/cryptsetup-keys.d/data2.key  luks,discard,keyfile-size=4096

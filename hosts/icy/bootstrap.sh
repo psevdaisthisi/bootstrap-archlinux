@@ -79,13 +79,13 @@ mkswap /dev/nvme0n1p3 && sleep 1
 
 luks_format_success="no"
 while [ "$luks_format_success" = "no" ]; do
-	printwarn 'Waiting for USB decryption key ...'
+	printwarn 'Waiting for the USB decryption key ...'
 	while [ ! -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ]; do
 		sleep 1
 	done
 	printinfo 'USB decryption key found.'
 
-	printinfo 'Extractng encrypt key ...' &&
+	printinfo 'Extracting encrypt key ...' &&
 	dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/root.key bs=4096 count=1 &&
 	printinfo 'Encrypting root...' &&
 	cryptsetup --verbose luksFormat /dev/nvme0n1p4 /tmp/root.key --type luks2 &&
@@ -99,7 +99,7 @@ done
 
 luks_open_success="no"
 while [ "$luks_open_success" = "no" ]; do
-	printinfo 'Opening ecrypted devices ...' &&
+	printinfo 'Opening encrypted devices ...' &&
 	cryptsetup open /dev/nvme0n1p5 data --key-file /tmp/data.key --allow-discards &&
 	printinfo 'Enter fallback password for root device ...' &&
 	cryptsetup luksAddKey /dev/nvme0n1p4 --key-file /tmp/root.key &&
@@ -155,7 +155,6 @@ sed -i -r "s|^FILES=\(\)|FILES=($_initramfs_files)|" "$_rootmnt"/etc/mkinitcpio.
 sed -i -r "s|^MODULES=\(\)|MODULES=($_initramfs_modules)|" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s|^HOOKS=(.*)|HOOKS=($_initramfs_hooks)|" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r '/#COMPRESSION="lz4"/s/^#*//g' "$_rootmnt"/etc/mkinitcpio.conf
-cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 
 # The keymap needs to be configured earlier so initramfs uses the correct layout
 # for entering the disk decryption password.

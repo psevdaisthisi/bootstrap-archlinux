@@ -3,7 +3,6 @@ GRUB_DEFAULT=0
 GRUB_TIMEOUT=1
 GRUB_DISTRIBUTOR="Arch"
 GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3 quiet audit=0 mitigations=off nmi_watchdog=0 selinux=0 i915.fastboot=1 i915.enable_fbc=1 i915.enable_guc=0 i915.enable_gvt=1 intel_iommu=on"
-GRUB_CMDLINE_LINUX="cryptdevice=/dev/nvme0n1p3:root:allow-discards"
 GRUB_PRELOAD_MODULES="part_gpt part_msdos"
 GRUB_ENABLE_CRYPTODISK=y
 GRUB_TIMEOUT_STYLE=menu

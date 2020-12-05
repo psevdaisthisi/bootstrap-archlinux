@@ -102,7 +102,7 @@ while [ "$luks_open_success" = "no" ]; do
 	printinfo 'Opening ecrypted devices ...' &&
 	cryptsetup open /dev/nvme0n1p5 data --key-file /tmp/data.key --allow-discards &&
 	printinfo 'Enter fallback password for root device ...' &&
-	cryptsetup luksAddKey /dev/nvme0n1p4 &&
+	cryptsetup luksAddKey /dev/nvme0n1p4 --key-file /tmp/root.key &&
 	cryptsetup open /dev/nvme0n1p4 root --key-file /tmp/root.key --allow-discards
 
 	[ $? -eq 0 ] && luks_open_success="yes"
@@ -119,13 +119,12 @@ printinfo "| Mounting partitions |"
 printinfo "+ ------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mount /dev/mapper/root "$_rootmnt" && sleep 1
-
 mkdir -p "$_rootmnt"/boot
 mount /dev/nvme0n1p2 "$_rootmnt"/boot
 mkdir -p "$_rootmnt"/boot/efi
 mount /dev/nvme0n1p1 "$_rootmnt"/boot/efi
 mkdir -p "$_rootmnt"/home/${_user}/vol1
-mount /dev/nvme0n1p5 "$_rootmnt"/home/${_user}/vol1
+mount /dev/mapper/data "$_rootmnt"/home/${_user}/vol1
 
 printinfo "\n"
 printinfo "+ --------------------- +"

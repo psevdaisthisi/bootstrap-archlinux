@@ -170,7 +170,7 @@ printinfo "+ ------------------------------------ +"
 printinfo "| Installing MongoDB and MongoDB Tools |"
 printinfo "+ ------------------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
-sudo bash install-mongodb.sh "${_user}"
+bash install-mongodb.sh
 
 printinfo "\n"
 printinfo "+ ------------------------ +"

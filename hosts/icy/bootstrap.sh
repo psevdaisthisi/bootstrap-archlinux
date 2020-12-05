@@ -151,9 +151,9 @@ chmod u=r,g=,o= "$_rootmnt"/etc/cryptsetup-keys.d/data.key
 _initramfs_files="/usr/local/share/kbd/keymaps/uncap.map"
 _initramfs_modules="amdgpu zstd"
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
-sed -i -r "s/^FILES=\(\)/FILES=($_initramfs_files)/" "$_rootmnt"/etc/mkinitcpio.conf
-sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
-sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf
+sed -i -r "s|^FILES=\(\)|FILES=($_initramfs_files)|" "$_rootmnt"/etc/mkinitcpio.conf
+sed -i -r "s|^MODULES=\(\)|MODULES=($_initramfs_modules)|" "$_rootmnt"/etc/mkinitcpio.conf
+sed -i -r "s|^HOOKS=(.*)|HOOKS=($_initramfs_hooks)|" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r '/#COMPRESSION="lz4"/s/^#*//g' "$_rootmnt"/etc/mkinitcpio.conf
 cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 

@@ -18,9 +18,9 @@ run_hook() {
 	if [ -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ]; then
 		echo 'Parsing decryption key ...'
 		dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/key bs=4096 count=1
-		cryptsetup open /dev/nvme0n1p4 root --key-file /tmp/key
+		cryptsetup open /dev/nvme0n1p4 root --key-file /tmp/key --allow-discards
 	else
 		echo 'USB decryption key not found. Falling-back to user password.'
-		cryptsetup open /dev/nvme0n1p4 root
+		cryptsetup open /dev/nvme0n1p4 root --allow-discards
 	fi
 }

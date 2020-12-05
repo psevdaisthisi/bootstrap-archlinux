@@ -69,9 +69,9 @@ parted /dev/nvme0n1 mkpart primary "${_starts_at}MiB" "100%" && sleep 1
 printinfo "\n"
 
 printinfo "\n"
-printinfo "+ --------------------------------------------------------------- +"
-printinfo "| Formatting /dev/nvme0n1 and setting up LUKS encrypted partition |"
-printinfo "+ --------------------------------------------------------------- +"
+printinfo "+ ------------------------------------------------------ +"
+printinfo "| Formatting /dev/nvme0n1 and setting up LUKS encryption |"
+printinfo "+ ------------------------------------------------------ +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 mkfs.fat -F32 /dev/nvme0n1p1 && sleep 1
 mkfs.f2fs -f /dev/nvme0n1p2 && sleep 1
@@ -123,9 +123,12 @@ pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 cp sysfiles/crypttab "$_rootmnt"/etc/crypttab
+cp sysfiles/crypttab.initramfs "$_rootmnt"/etc/crypttab.initramfs
 
+_initramfs_files="/usr/local/share/kbd/keymaps/uncap.map"
 _initramfs_modules="amdgpu zstd"
 _initramfs_hooks="base autodetect udev keyboard keymap consolefont encrypt modconf block filesystems"
+sed -i -r "s/^FILES=\(\)/FILES=($_initramfs_files)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^MODULES=\(\)/MODULES=($_initramfs_modules)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r "s/^HOOKS=(.*)/HOOKS=($_initramfs_hooks)/" "$_rootmnt"/etc/mkinitcpio.conf
 sed -i -r '/#COMPRESSION="lz4"/s/^#*//g' "$_rootmnt"/etc/mkinitcpio.conf

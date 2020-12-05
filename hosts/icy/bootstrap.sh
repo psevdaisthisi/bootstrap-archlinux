@@ -79,19 +79,39 @@ mkswap /dev/nvme0n1p3 && sleep 1
 
 luks_format_success="no"
 while [ "$luks_format_success" = "no" ]; do
-	cryptsetup --verbose luksFormat /dev/nvme0n1p4
+	printwarn 'Waiting for USB decryption key ...'
+	while [ ! -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ]; do
+		sleep 1
+	done
+	printinfo 'USB decryption key found.'
+
+	printinfo 'Extractng encrypt key ...' &&
+	dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/root.key bs=4096 count=1 &&
+	printinfo 'Encrypting root...' &&
+	cryptsetup --verbose luksFormat /dev/nvme0n1p4 /tmp/root.key --type luks2 &&
+	printinfo 'Generating encryption key for data ...' &&
+	dd if=/dev/urandom of=/tmp/data.key bs=4096 count=1 &&
+	printinfo 'Encrypting data...' &&
+	cryptsetup --verbose luksFormat /dev/nvme0n1p5 /tmp/data.key --type luks2
+
 	[ $? -eq 0 ] && luks_format_success="yes"
 done
 
-luks_mount_success="no"
-while [ "$luks_mount_success" = "no" ]; do
-	cryptsetup open /dev/nvme0n1p4 root
-	[ $? -eq 0 ] && luks_mount_success="yes"
+luks_open_success="no"
+while [ "$luks_open_success" = "no" ]; do
+	printinfo 'Opening ecrypted devices ...' &&
+	cryptsetup open /dev/nvme0n1p5 data --key-file /tmp/data.key --allow-discards &&
+	printinfo 'Enter fallback password for root device ...' &&
+	cryptsetup luksAddKey /dev/nvme0n1p4 &&
+	cryptsetup open /dev/nvme0n1p4 root --key-file /tmp/root.key --allow-discards
+
+	[ $? -eq 0 ] && luks_open_success="yes"
 done
 sleep 1
+rm -f /tmp/root.key
 
 mkfs.f2fs -O encrypt -f /dev/mapper/root && sleep 1
-mkfs.f2fs -O encrypt -f /dev/nvme0n1p5 && sleep 1
+mkfs.f2fs -O encrypt -f /dev/mapper/data && sleep 1
 
 printinfo "\n"
 printinfo "+ ------------------- +"
@@ -123,7 +143,11 @@ pacstrap -i "$_rootmnt" mkinitcpio --noconfirm
 cp "$_rootmnt"/etc/mkinitcpio.conf "$_rootmnt"/etc/mkinitcpio.conf.backup
 cp "$_rootmnt"/etc/crypttab "$_rootmnt"/etc/crypttab.backup
 cp sysfiles/crypttab "$_rootmnt"/etc/crypttab
-cp sysfiles/crypttab.initramfs "$_rootmnt"/etc/crypttab.initramfs
+cp sysfiles/decrypt.install "$_rootmnt"/etc/initcpio/install/decrypt
+cp sysfiles/decrypt.hook "$_rootmnt"/etc/initcpio/hooks/decrypt
+mkdir -p "$_rootmnt"/etc/cryptsetup-keys.d/
+mv /tmp/data.key "$_rootmnt"/etc/cryptsetup-keys.d/
+chmod u=r,g=,o= "$_rootmnt"/etc/cryptsetup-keys.d/data.key
 
 _initramfs_files="/usr/local/share/kbd/keymaps/uncap.map"
 _initramfs_modules="amdgpu zstd"

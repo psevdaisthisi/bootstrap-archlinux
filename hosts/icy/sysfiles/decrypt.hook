@@ -1,0 +1,26 @@
+#!/usr/bin/ash
+# vim:ft=sh
+
+run_hook() {
+	modprobe -a -q dm-crypt >/dev/null 2>&1
+	modprobe loop
+	[ "${quiet}" = "y" ] && CSQUIET=">/dev/null"
+
+	total_time=21
+	curr_time=0
+	echo 'Waiting for USB decryption key ...'
+	while [ ! -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ] && \
+	      [ $curr_time -le $total_time ]; do
+		sleep 1
+		curr_time=$((curr_time + 1))
+	done
+
+	if [ -L '/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0' ]; then
+		echo 'Parsing decryption key ...'
+		dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/key bs=4096 count=1
+		cryptsetup open /dev/nvme0n1p4 root --key-file /tmp/key
+	else
+		echo 'USB decryption key not found. Falling-back to user password.'
+		cryptsetup open /dev/nvme0n1p4 root
+	fi
+}

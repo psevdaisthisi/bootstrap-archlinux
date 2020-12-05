@@ -1,1 +1,0 @@
-root  /dev/nvme0n1p4 /dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0  luks,keyfile-size=4096,keyfile-timeout=10s

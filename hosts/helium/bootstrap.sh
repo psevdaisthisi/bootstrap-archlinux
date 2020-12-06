@@ -196,18 +196,17 @@ printinfo "+ -------------------------- +"
 [ "$_stepping" ] && { yesno "Continue?" || exit 1; }
 _pkgs_base=(base intel-ucode linux-lts linux-firmware)
 _pkgs_drivers=(intel-media-driver libva libva-intel-driver mesa ntfs-3g
-               vulkan-intel xf86-video-intel)
+               vulkan-intel wireguard-lts xf86-video-intel)
 _pkgs_sys=(atk avahi bash bluez coreutils dhcpcd efibootmgr exfat-utils
            f2fs-tools fakeroot findutils fish fscrypt gptfdisk grub iwd lz4
-           nss-mdns pacman parted patch pulseaudio rng-tools sudo wireguard-lts
-           xz zip zstd)
+           nss-mdns pacman parted patch pulseaudio rng-tools sudo xz zip zstd)
 _pkgs_tools=(archiso aria2 bash-completion bat bc bluez-utils cpupower croc curl
              entr exa fd ffmpeg firejail fwupd fzf gawk gnupg gocryptfs go-ipfs
              hey htop inotify-tools intel-gpu-tools intel-undervolt iotop jq
              libva-utils lshw lsof man neovim nmap nnn openbsd-netcat openssh
              os-prober p7zip pbzip2 pigz powertop progress ripgrep samba svt-av1
              svt-hevc svt-vp9 thermald tigervnc time tmux tree turbostat unzip
-             usbutils usleep which xdg-user-dirs)
+             usbutils usleep wireguard-tools which xdg-user-dirs)
 _pkgs_dev=(afl autoconf automake binaryen binutils bison clang cmake ctags
            diffutils docker docker-compose edk2-ovmf gcc gdb git go go-tools
            intel-media-sdk lldb ltrace m4 make man-pages ninja openssl-1.0 perf

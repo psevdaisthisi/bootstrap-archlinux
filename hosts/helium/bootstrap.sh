@@ -96,7 +96,7 @@ while [ "$luks_format_success" = "no" ]; do
 	printinfo 'USB decryption key found.'
 
 	printinfo 'Extracting encrypt key ...' &&
-	dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/root.key bs=4096 count=1 &&
+	dd if=/dev/disk/by-id/usb-General_USB_Flash_Disk_7911020000213736-0:0 of=/tmp/root.key skip=4096 bs=4096 count=1 &&
 	printinfo 'Encrypting root...' &&
 	cryptsetup --verbose luksFormat /dev/nvme0n1p3 /tmp/root.key --type luks2 &&
 	printinfo 'Generating encryption key for data1 ...' &&

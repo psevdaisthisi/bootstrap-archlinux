@@ -312,8 +312,12 @@ nnoremap <Leader>sd :call fzf#run(fzf#wrap({'source': 'fd --type d'}))<CR>
 "" Improved upon https://stackoverflow.com/a/4823111
 nnoremap * :keepjumps normal! msHmt`s*`tzt`s<CR>
 nnoremap # :keepjumps normal! msHmt`s#`tzt`s<CR>
-nnoremap <A-f> :%s/
-inoremap <A-f> <ESC>:%s/
+nnoremap <A-r>f :%s/
+inoremap <A-r>f <ESC>:%s/
+nnoremap <A-r>w :%s/<C-r><C-w>/
+inoremap <A-r>w <ESC>:%s/<C-r><C-w>/
+nnoremap <Leader>rf :%s/
+nnoremap <Leader>rw :%s/<C-r><C-w>//gc<left><left><left>
 
 " Visualisation-related mappings
 nnoremap <Leader>vn1 :set number<CR>
